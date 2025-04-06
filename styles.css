@@ -1,0 +1,84 @@
+:root {
+    /* https://github.com/morhetz/gruvbox */
+    /* Light theme (Gruvbox Light Hard) */
+    --bg-color: #f9f5d7;
+    --text-color: #282828;
+
+    --blue: #076678;
+}
+
+/* TODO: add support for prefers-color-scheme */
+body:has(#theme-toggle:checked) {
+    /* https://github.com/morhetz/gruvbox */
+    /* Dark theme (Gruvbox Dark Hard) */
+    --bg-color: #1d2021;
+    --text-color: #fbf1c7;
+    --blue: #83a598;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Optional: Apply a smooth transition when colors change */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: sans-serif;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: auto;
+    padding: 1rem;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+a {
+    color: var(--blue)
+}
+
+header h1 a {
+    text-decoration: none;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+nav a {
+    text-decoration: none;
+}
+
+main article {
+    margin-bottom: 3rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--text-color);
+}
+
+.post-meta {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.post-content p {
+    margin-bottom: 1rem;
+}
+
+.toggle-label {
+    cursor: pointer;
+}
+
+footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 0.8rem;
+}

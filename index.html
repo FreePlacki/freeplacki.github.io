@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mBlog</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <input type="checkbox" id="theme-toggle" hidden>
+    <label for="theme-toggle" class="toggle-label">Toggle Dark Mode</label>
+
+    <header>
+        <h1><a href="#">My Blog</a></h1>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <article>
+            <h2>Blog Post Title</h2>
+            <p class="post-meta">April 6, 2025 — Category</p>
+            <div class="post-content">
+                <p>Lorem ipsum dolor sit amet...</p>
+                <!-- More content -->
+            </div>
+        </article>
+        <!-- Repeat <article> for more posts -->
+        <pre>
+            <!-- TODO: use a staic generator to have highlighting -->
+            <code class="language-rust">
+                fn main() {
+                println!("Hello, world!");
+                }
+            </code>
+        </pre>
+
+        <p>Inline code example: <code class="language-python">print("Hello, world!")</code></p>
+    </main>
+
+    <footer>
+        <p>© 2025 Paweł Bielecki. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>
