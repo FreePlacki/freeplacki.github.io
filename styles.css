@@ -1,20 +1,4 @@
-:root {
-    /* https://github.com/morhetz/gruvbox */
-    /* Light theme (Gruvbox Light Hard) */
-    --bg-color: #f9f5d7;
-    --text-color: #282828;
-
-    --blue: #076678;
-}
-
-/* TODO: add support for prefers-color-scheme */
-:root:has(#theme-toggle:checked) {
-    /* https://github.com/morhetz/gruvbox */
-    /* Dark theme (Gruvbox Dark Hard) */
-    --bg-color: #1d2021;
-    --text-color: #fbf1c7;
-    --blue: #83a598;
-}
+@import "theme.css";
 
 * {
     margin: 0;
@@ -71,10 +55,6 @@ main article {
 
 .post-content p {
     margin-bottom: 1rem;
-}
-
-.toggle-label {
-    cursor: pointer;
 }
 
 .article-header {

@@ -2,6 +2,7 @@
 
 ```css
 :root {
+    /* comment */
     --var1: 0.5;
 }
 ```

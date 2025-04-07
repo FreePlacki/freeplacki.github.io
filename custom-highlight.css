@@ -1,0 +1,159 @@
+@import "theme.css";
+
+/* Alert */
+code span.al {
+    color: var(--yellow);
+    font-weight: bold;
+}
+
+/* Annotation */
+code span.an {
+    color: var(--blue);
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* Attribute */
+code span.at {
+    color: var(--blue);
+}
+
+/* BaseN */
+code span.bn {
+    color: var(--purple);
+}
+
+/* BuiltIn */
+code span.bu {
+    color: var(--green);
+}
+
+/* ControlFlow */
+code span.cf {
+    color: var(--red);
+    font-weight: bold;
+}
+
+/* Char */
+code span.ch {
+    color: var(--purple);
+}
+
+/* Constant */
+code span.cn {
+    color: var(--purple);
+}
+
+/* Comment */
+code span.co {
+    color: var(--gray);
+    font-style: italic;
+}
+
+/* CommentVar */
+code span.cv {
+    color: var(--gray);
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* Documentation */
+code span.do {
+    color: #ba2121;
+    font-style: italic;
+}
+
+/* DataType */
+code span.dt {
+    color: var(--yellow);
+}
+
+/* DecVal */
+code span.dv {
+    color: var(--purple);
+}
+
+/* Error */
+code span.er {
+    color: var(--red);
+    font-weight: bold;
+}
+
+/* Extension */
+code span.ex {}
+
+/* Float */
+code span.fl {
+    color: var(--purple);
+}
+
+/* Function */
+code span.fu {
+    color: var(--green);
+}
+
+/* Import */
+code span.im {
+    color: var(--aqua);
+    font-weight: bold;
+}
+
+/* Information */
+code span.in {
+    color: var(--blue);
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* Keyword */
+code span.kw {
+    color: var(--red);
+    font-weight: bold;
+}
+
+/* Operator */
+code span.op {
+    color: var(--text-color);
+}
+
+/* Other */
+code span.ot {
+    color: var(--text-color);
+}
+
+/* Preprocessor */
+code span.pp {
+    color: var(--aqua);
+}
+
+/* SpecialChar */
+code span.sc {
+    color: var(--purple);
+}
+
+/* SpecialString */
+code span.ss {
+    color: var(--green);
+}
+
+/* String */
+code span.st {
+    color: var(--green);
+}
+
+/* Variable */
+code span.va {
+    color: var(--blue);
+}
+
+/* VerbatimString */
+code span.vs {
+    color: var(--green);
+}
+
+/* Warning */
+code span.wa {
+    color: var(--yellow);
+    font-weight: bold;
+    font-style: italic;
+}

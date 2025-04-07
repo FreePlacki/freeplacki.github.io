@@ -1,0 +1,31 @@
+:root {
+    /* https://github.com/morhetz/gruvbox */
+    /* Light theme (Gruvbox Light Hard) */
+    --bg-color: #f9f5d7;
+    --text-color: #282828;
+
+    --red: #cc241d;
+    --green: #98971a;
+    --yellow: #d79921;
+    --blue: #458588;
+    --purple: #b16286;
+    --aqua: #689d6a;
+    --gray: #7c6f64;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* https://github.com/morhetz/gruvbox */
+        /* Dark theme (Gruvbox Dark Hard) */
+        --bg-color: #1d2021;
+        --text-color: #fbf1c7;
+
+        --red: #cc241d;
+        --green: #98971a;
+        --yellow: #d79921;
+        --blue: #458588;
+        --purple: #b16286;
+        --aqua: #689d6a;
+        --gray: #a89984;
+    }
+}
