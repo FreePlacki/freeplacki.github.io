@@ -8,7 +8,7 @@
 }
 
 /* TODO: add support for prefers-color-scheme */
-body:has(#theme-toggle:checked) {
+:root:has(#theme-toggle:checked) {
     /* https://github.com/morhetz/gruvbox */
     /* Dark theme (Gruvbox Dark Hard) */
     --bg-color: #1d2021;
@@ -23,7 +23,7 @@ body:has(#theme-toggle:checked) {
 }
 
 /* Optional: Apply a smooth transition when colors change */
-body {
+:root {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: sans-serif;
@@ -75,6 +75,11 @@ main article {
 
 .toggle-label {
     cursor: pointer;
+}
+
+.article-header {
+    text-decoration: none;
+    color: var(--text-color);
 }
 
 footer {
