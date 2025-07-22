@@ -11,6 +11,11 @@
     }
 }
 
+html, body {
+    max-width: 800px;
+    margin: auto;
+}
+
 @media print {
     html {
         background-color: white;
@@ -95,7 +100,8 @@ blockquote {
 }
 
 code {
-    font-family: Menlo, Monaco, Consolas, 'Cascadia Code', monospace;
+    font-family: 'Cascadia Code', Menlo, Monaco, Consolas, monospace;
+    font-variant-ligatures: normal;
     font-size: 85%;
     margin: 0;
     hyphens: manual;
@@ -104,6 +110,7 @@ code {
 pre {
     margin: 1em 0;
     overflow: auto;
+    padding: 1em;
 }
 
 pre code {
@@ -113,8 +120,9 @@ pre code {
 }
 
 .sourceCode {
-    background-color: transparent;
+    background-color: var(--bg-color-h);
     overflow: visible;
+    border-radius: 0.5em;
 }
 
 hr {
@@ -292,8 +300,6 @@ pre.numberSource {
     border-left: 1px solid #aaaaaa;
     padding-left: 4px;
 }
-
-div.sourceCode {}
 
 @media screen {
     pre>code.sourceCode>span>a:first-child::before {

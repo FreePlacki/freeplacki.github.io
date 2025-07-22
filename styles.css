@@ -1,19 +1,20 @@
 @import "theme.css";
 
-* {
+body,
+html {
+    width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-/* Optional: Apply a smooth transition when colors change */
 :root {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: sans-serif;
+    font-family: Crimson, Georgia, serif;
     line-height: 1.6;
-    max-width: 800px;
-    margin: auto;
+    /* max-width: 800px; */
+    /* margin: auto; */
     padding: 1rem;
     transition: background-color 0.3s, color 0.3s;
 }
@@ -67,4 +68,21 @@ footer {
     text-align: center;
     margin-top: 3rem;
     font-size: 0.8rem;
+}
+
+.main-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+iframe {
+    border: none;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
 }
