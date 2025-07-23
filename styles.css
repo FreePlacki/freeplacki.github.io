@@ -13,9 +13,6 @@ html {
     color: var(--text-color);
     font-family: Crimson, Georgia, serif;
     line-height: 1.6;
-    /* max-width: 800px; */
-    /* margin: auto; */
-    padding: 1rem;
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -76,13 +73,11 @@ footer {
     height: 100%;
     flex-direction: column;
     overflow: hidden;
+    align-items: center;
 }
 
-iframe {
-    border: none;
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    flex-grow: 1;
+main {
+    width: 800px
+    /* margin-left: auto; */
+    /* margin-right: auto; */
 }

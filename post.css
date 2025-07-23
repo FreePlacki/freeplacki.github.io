@@ -306,3 +306,12 @@ pre.numberSource {
         text-decoration: underline;
     }
 }
+
+.sidenote {
+  float: right;
+  clear: right;
+  width: 25%;
+  margin: 0 0 1em 1em;
+  font-size: 0.9em;
+  color: #555;
+}
