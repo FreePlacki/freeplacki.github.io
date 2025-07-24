@@ -10,7 +10,7 @@
     --blue: #076678;
     --purple: #8f3f71;
     --aqua: #427b58;
-    --gray: #ebdbb2;
+    --gray: #928374;
 
     /* Gruvbox Light Hard */
     --bg-color-h: #f9f5d7;
@@ -22,7 +22,7 @@
     --blue-h: #458588;
     --purple-h: #b16286;
     --aqua-h: #689d6a;
-    --gray-h: #a89984;
+    --gray-h: #7c6f64;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -38,7 +38,7 @@
         --blue: #83a598;
         --purple: #d3869b;
         --aqua: #8ec07c;
-        --gray: #ebdbb2;
+        --gray: #928374;
 
         /* Gruvbox Dark Hard */
         --bg-color-h: #1d2021;
@@ -50,6 +50,6 @@
         --blue-h: #458588;
         --purple-h: #b16286;
         --aqua-h: #689d6a;
-        --gray-h: #a89984;
+        --gray-h: #7c6f64;
     }
 }

@@ -11,9 +11,11 @@
     }
 }
 
-html, body {
+html,
+body {
     max-width: 800px;
-    margin: auto;
+    margin: 2em auto;
+    scroll-behavior: smooth;
 }
 
 @media print {
@@ -122,7 +124,6 @@ pre code {
 .sourceCode {
     background-color: var(--bg-color-h);
     overflow: visible;
-    border-radius: 0.5em;
 }
 
 hr {
@@ -308,10 +309,96 @@ pre.numberSource {
 }
 
 .sidenote {
-  float: right;
-  clear: right;
-  width: 25%;
-  margin: 0 0 1em 1em;
-  font-size: 0.9em;
-  color: #555;
+    float: right;
+    clear: right;
+    width: 300px;
+    margin: 0 0 1em 1em;
+    font-size: 0.9em;
+    padding: 0.75em 1em;
+    font-size: 0.8em;
+    line-height: 1.4;
+    background-color: var(--bg-color);
+    position: relative;
+    color: var(--text-color);
+    transform: translateX(110%);
+    will-change: transform;
+}
+
+.sidenote::before {
+    content: "";
+    position: absolute;
+    top: 0.5em;
+    bottom: 0.5em;
+    left: 0;
+    width: 3px;
+    background: var(--blue);
+    border-radius: 2px;
+}
+
+@media screen and (max-width: 1200px) {
+    .sidenote {
+        transform: none !important;
+        float: none;
+        clear: both;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border-radius: 0;
+        border-top: 1px solid var(--blue);
+        border-bottom: 1px solid var(--blue);
+    }
+
+    .sidenote::before {
+        display: none;
+    }
+}
+
+#TOC {
+    position: fixed;
+    top: 1em;
+    z-index: 999;
+    padding: 1em;
+    width: 12em;
+    transform: translateX(-130%);
+    background: none;
+}
+
+#TOC::before {
+    content: "";
+    position: absolute;
+    top: 20%;
+    bottom: 1em;
+    left: 100%;
+    width: 3px;
+    background: var(--purple);
+    border-radius: 3px;
+}
+
+#TOC ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#TOC a {
+    display: block;
+    position: relative;
+    padding-left: 1em;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: color 0.2s, font-weight 0.2s;
+}
+
+#TOC a:hover {
+    color: var(--blue);
+}
+
+@media screen and (max-width: 1600px) {
+    #TOC {
+        display: none;
+    }
+
+    html {
+        margin: 2em;
+    }
 }
