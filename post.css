@@ -351,6 +351,17 @@ pre.numberSource {
     .sidenote::before {
         display: none;
     }
+
+    body {
+        width: 100%;
+        max-width: 80vw;
+        margin: 2em auto;
+    }
+
+    html {
+        width: 100%;
+        margin: 0 auto !important;
+    }
 }
 
 #TOC {
@@ -393,7 +404,7 @@ pre.numberSource {
     color: var(--blue);
 }
 
-@media screen and (max-width: 1600px) {
+@media screen and (max-width: 1500px) {
     #TOC {
         display: none;
     }
