@@ -17,34 +17,95 @@
         <nav id="TOC">
         <h2>Mandelbrot set in CSS</h2>
         <ul>
-        <li><a href="#title" id="toc-title">Title</a></li>
-        <li><a href="#another-section" id="toc-another-section">Another
-        section</a></li>
-        <li><a href="#last-section" id="toc-last-section">Last
-        section!</a></li>
+        <li><a href="#what" id="toc-what">What?</a></li>
+        <li><a href="#why" id="toc-why">Why?</a></li>
+        <li><a href="#laying-the-foundation-variables"
+        id="toc-laying-the-foundation-variables">Laying the foundation,
+        variables</a></li>
         </ul>
     </nav>
     
-    <h2 id="title">Title</h2>
-    <div class="sourceCode" id="cb1"><pre
-    class="sourceCode css"><code class="sourceCode css"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="in">:root</span> {</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* comment */</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">--var1</span><span class="ch">:</span> <span class="dv">0.5</span><span class="op">;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-    <p>And some inline math:
-    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">x^2 + 3</annotation></semantics></math>.</p>
+    <h2 id="what">What?</h2>
+    <p>If you somehow don’t know what the <a
+    href="https://en.wikipedia.org/wiki/Mandelbrot_set">Mandelbrot
+    set</a> is, here is a quick introduction. It’s defined as the set of
+    all numbers
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>∈</mo><mi>ℂ</mi></mrow><annotation encoding="application/x-tex">c \in \mathbb{C}</annotation></semantics></math>
+    for which the function
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>z</mi><mn>2</mn></msup><mo>+</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">f(z) = z^2 + c</annotation></semantics></math>
+    doesn’t diverge to infinity when iterated starting at
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>.</p>
+    <p>By mapping the values of
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+    to cartesian coordinates (meaning for example
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mn>3</mn><mo>+</mo><mn>4</mn><mi>i</mi></mrow><annotation encoding="application/x-tex">c=3+4i</annotation></semantics></math>
+    gets mapped to the point
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(3, 4)</annotation></semantics></math>)
+    we can produce some <a
+    href="https://en.wikipedia.org/wiki/Mandelbrot_set#/media/File:Mandel_zoom_00_mandelbrot_set.jpg">cool
+    images</a>. You choose a color for the points that belong to the set
+    and for others you pick the colors based on how fast they diverge
+    (how many iterations were needed before the value crossed a certain
+    threshold).</p>
+    <p>You can check out the final product <a
+    href="https://freeplacki.github.io/cssbrot">here</a> along with the
+    source code <a href="https://github.com/FreePlacki/cssbrot">here</a>
+    (NOTE: if it doesn’t work try disabling darkreader or any similar
+    extension).</p>
     <div class="sidenote">
-    <p>This text will live in the margin alongside your main text.</p>
+    <p>Try moving your cursor over it.</p>
     </div>
-    <p>And normal math:
-    <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>z</mi><mn>2</mn></msup><mo>+</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">f(x) = z^2 + c</annotation></semantics></math>.</p>
-    <h2 id="another-section">Another section</h2>
-    <p>Hello world!</p>
+    <h2 id="why">Why?</h2>
+    <p>You can generate such images with a few lines of pretty much any
+    <em>reasonable</em> programming language. Doing it in pure HTML+CSS
+    presents some challanges. As we all know CSS is clearly <a
+    href="https://stackoverflow.com/a/26445990">not Turing complete</a>
+    as there is no way to have infinite loops so if it was then we have
+    a contradiction with <a
+    href="https://en.wikipedia.org/wiki/Halting_problem">the Halting
+    Problem</a>.</p>
     <blockquote>
-    <p>A quote?</p>
+    <p>Actually… it is. <a
+    href="http://eli.fox-epste.in/rule110-full.html">Look</a> I
+    implemented <a href="https://en.wikipedia.org/wiki/Rule_110">Rule
+    110</a>.</p>
+    <blockquote>
+    <p><a
+    href="https://accodeing.com/blog/2015/duty-calls-css3-is-not-proven-to-be-turing-complete">Nope</a>.
+    Using your approach the number of CSS rules would scale with the
+    input AND it requires constant human interaction to function.</p>
+    <blockquote>
+    <p>Ok, <a
+    href="https://accodeing.com/blog/2015/css3-proven-to-be-turing-complete">maybe
+    not</a> but still it requires the user to constantly press keys so
+    you might as well just <a
+    href="https://stackoverflow.com/a/51408598">write the instructions
+    for the human in natural language</a>.</p>
     </blockquote>
-    <h2 id="last-section">Last section!</h2>
-    <p>Lorem ipsum</p>
+    </blockquote>
+    </blockquote>
+    <p>…</p>
+    <p>It’s not that simple and you’re welcome to do your own research.
+    What is certain though, is that modern CSS has features (that we
+    will explore in a second) that allow you to do <a
+    href="https://mooninaut.github.io/css-is-turing-complete/">cool
+    shit</a> and <a href="https://lab.avl.la/css-calculations/">perform
+    arithmetic</a>.</p>
+    <h2 id="laying-the-foundation-variables">Laying the foundation,
+    variables</h2>
+    <p>As far as I’m aware there is no way to draw on the html canvas
+    with just CSS and we are gonna need something to represent our
+    drawing, so we’re gonna use individal <code>div</code>s to represent
+    the pixels. Let’s go for a
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>20</mn><mo>×</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">20\times20</annotation></semantics></math>
+    image for a total of
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>400</mn><annotation encoding="application/x-tex">400</annotation></semantics></math>
+    <code>div</code>s…</p>
+    <div class="sidenote">
+    <p>I get a weird feeling in my stomach when the size of my code
+    scales with the size of the output, but hey, HTML is not a
+    programming language, so it’s fine, <small>right?</small></p>
+    </div>
 </body>
 
 </html>

@@ -48,11 +48,11 @@ p {
 }
 
 a {
-    color: #1a1a1a;
+    color: var(--blue);
 }
 
 a:visited {
-    color: #1a1a1a;
+    color: var(--blue);
 }
 
 img {
@@ -97,8 +97,8 @@ li>ul {
 blockquote {
     margin: 1em 0 1em 1.7em;
     padding-left: 1em;
-    border-left: 2px solid #e6e6e6;
-    color: #606060;
+    border-left: 2px solid var(--blue);
+    color: var(--text-color);
 }
 
 code {
@@ -320,7 +320,7 @@ pre.numberSource {
     background-color: var(--bg-color);
     position: relative;
     color: var(--text-color);
-    transform: translateX(110%);
+    transform: translateX(110%) translateY(-100%);
     will-change: transform;
 }
 
