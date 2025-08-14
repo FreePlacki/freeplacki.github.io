@@ -44,6 +44,7 @@ modern CSS has features (that we will explore in a second) that allow you to do 
 As far as I'm aware there is no way to draw on the html canvas with just CSS and
 we are gonna need something to represent our drawing, so we're gonna use individal `div`s to
 represent the pixels. Let's go for a $20\times20$ image for a total of $400$ `div`s...
+<!-- abcd <span class="rainbow">variables</span> abc -->
 
 ::: {.sidenote}
 I get a weird feeling in my stomach when the size of my code scales with the size
