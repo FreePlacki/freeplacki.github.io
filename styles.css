@@ -46,12 +46,13 @@ nav a {
 main article {
     margin-bottom: 3rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid var(--text-color);
+    border-bottom: 2px solid var(--blue);
 }
 
 .post-meta {
     font-size: 0.9rem;
     margin-bottom: 1rem;
+    color: var(--gray)
 }
 
 .post-content p {
@@ -80,7 +81,8 @@ footer {
 }
 
 main {
-    width: 800px
+    width: 800px;
+    max-width: 90vw;
     /* margin-left: auto; */
     /* margin-right: auto; */
 }
