@@ -44,9 +44,63 @@ modern CSS has features (that we will explore in a second) that allow you to do 
 As far as I'm aware there is no way to draw on the html canvas with just CSS and
 we are gonna need something to represent our drawing, so we're gonna use individal `div`s to
 represent the pixels. Let's go for a $20\times20$ image for a total of $400$ `div`s...
-<!-- abcd <span class="rainbow">variables</span> abc -->
+Ok `400i<div></div><CR><Esc>` done.
 
 ::: {.sidenote}
 I get a weird feeling in my stomach when the size of my code scales with the size
 of the output, but hey, HTML is not a programming language, so it's fine, <small>right?</small>
+
+Also vim btw.
 :::
+
+We're gonna need some way to identify them to be able to calculate their colors later.
+That's where <span class="rainbow">variables</span> come in. Let's assign them their
+$x, y$ coordinates (starting with $(1, 1)$ for the top left). Basically:
+
+```html
+<div style="--x:1; --y:1;"></div>
+<div style="--x:2; --y:1;"></div>
+<div style="--x:3; --y:1;"></div>
+...
+```
+
+I'm sure you could come up with a clever vim macro to do this but we're gonna use
+python for code generation later any way so might as well...
+
+```python
+rows, cols = 20, 20
+
+for y in range(1, rows + 1):
+    for x in range(1, cols + 1):
+        print(f"<div style=\"--x:{x}; --y:{y};\"></div>")
+    print()
+```
+
+We also want to display them in a $20x20$ grid. So let's wrap everything in a
+`<div id="mandelbrot>...</div>`.
+
+```css
+:root {
+    --s: 20;
+}
+
+#mandelbrot {
+    display: grid;
+    grid-template-columns: repeat(var(--s), 30px);
+    grid-auto-rows: 30px;
+}
+```
+
+Notice we use a variable for the grid size as we're going to use this value in
+calculations later.
+
+To see variables in action let's use our grid to display a simple pattern.
+For that we'll need another key CSS feature -- the <span class="rainbow">calc</span> function.
+
+```css
+#mandelbrot div {
+    background-color: rgba(255, 255, 255,
+        calc(var(--x) * var(--y) / pow(var(--s), 2)));
+}
+```
+

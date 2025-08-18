@@ -100,13 +100,61 @@
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>20</mn><mo>×</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">20\times20</annotation></semantics></math>
     image for a total of
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>400</mn><annotation encoding="application/x-tex">400</annotation></semantics></math>
-    <code>div</code>s…
-    <!-- abcd <span class="rainbow">variables</span> abc --></p>
+    <code>div</code>s… Ok
+    <code>400i&lt;div&gt;&lt;/div&gt;&lt;CR&gt;&lt;ESC&gt;</code>
+    done.</p>
     <div class="sidenote">
     <p>I get a weird feeling in my stomach when the size of my code
     scales with the size of the output, but hey, HTML is not a
     programming language, so it’s fine, <small>right?</small></p>
+    <p>Also vim btw.</p>
     </div>
+    <p>We’re gonna need some way to identify them to be able to
+    calculate their colors later. That’s where <span
+    class="rainbow">variables</span> come in. Let’s assign them their
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x, y</annotation></semantics></math>
+    coordinates (starting with
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1, 1)</annotation></semantics></math>
+    for the top left). Basically:</p>
+    <div class="sourceCode" id="cb1"><pre
+    class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> style</span><span class="op">=</span><span class="st">&quot;--x:1; --y:1;&quot;</span><span class="dt">&gt;&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> style</span><span class="op">=</span><span class="st">&quot;--x:2; --y:1;&quot;</span><span class="dt">&gt;&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> style</span><span class="op">=</span><span class="st">&quot;--x:3; --y:1;&quot;</span><span class="dt">&gt;&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
+    <p>I’m sure you could come up with a clever vim macro to do this but
+    we’re gonna use python for code generation later any way so might as
+    well…</p>
+    <div class="sourceCode" id="cb2"><pre
+    class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>rows, cols <span class="op">=</span> <span class="dv">20</span>, <span class="dv">20</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, rows <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, cols <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;&lt;div style=</span><span class="ch">\&quot;</span><span class="ss">--x:</span><span class="sc">{</span>x<span class="sc">}</span><span class="ss">; --y:</span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">;</span><span class="ch">\&quot;</span><span class="ss">&gt;&lt;/div&gt;&quot;</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span></code></pre></div>
+    <p>We also want to display them in a
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>20</mn><mi>x</mi><mn>20</mn></mrow><annotation encoding="application/x-tex">20x20</annotation></semantics></math>
+    grid. So let’s wrap everything in a
+    <code>&lt;div id="mandelbrot&gt;...&lt;/div&gt;</code>.</p>
+    <div class="sourceCode" id="cb3"><pre
+    class="sourceCode css"><code class="sourceCode css"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="in">:root</span> {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">--s</span><span class="ch">:</span> <span class="dv">20</span><span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#mandelbrot</span> {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span><span class="ch">:</span> <span class="dv">grid</span><span class="op">;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-template-columns</span><span class="ch">:</span> <span class="fu">repeat(var(</span><span class="va">--s</span><span class="fu">)</span><span class="op">,</span> <span class="dv">30</span><span class="dt">px</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">grid-auto-rows</span><span class="ch">:</span> <span class="dv">30</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+    <p>Notice we use a variable for the grid size as we’re going to use
+    this value in calculations later.</p>
+    <p>To see variables in action let’s use our grid to display a simple
+    pattern. For that we’ll need another key CSS feature – the <span
+    class="rainbow">calc</span> function.</p>
+    <div class="sourceCode" id="cb4"><pre
+    class="sourceCode css"><code class="sourceCode css"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#mandelbrot</span> div {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">background-color</span><span class="ch">:</span> <span class="fu">rgba(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">calc(var(</span><span class="va">--x</span><span class="fu">)</span> <span class="op">*</span> <span class="fu">var(</span><span class="va">--y</span><span class="fu">)</span> <span class="op">/</span> <span class="fu">pow(var(</span><span class="va">--s</span><span class="fu">)</span><span class="op">,</span> <span class="dv">2</span><span class="fu">)))</span><span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </body>
 
 </html>
