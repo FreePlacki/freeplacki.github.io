@@ -111,11 +111,11 @@ code {
 pre {
     margin: 1em 0;
     overflow: auto;
-    padding: 1em;
+    padding: 0em;
 }
 
 pre code {
-    padding: 0;
+    padding: 1em;
     overflow: visible;
     overflow-wrap: normal;
 }
@@ -232,7 +232,13 @@ pre>code.sourceCode>span:empty {
 }
 
 .sourceCode {
+    display: inline-block;
+    min-width: 95%;
     overflow: visible;
+}
+
+.sourceCode pre {
+    width: 100%;
 }
 
 code.sourceCode>span {
@@ -312,15 +318,15 @@ pre.numberSource {
 .sidenote {
     float: right;
     clear: right;
-    width: 300px;
-    margin: 0 0 1em 1em;
+    width: 340px;
+    margin: 0 0 0.5em 0.5em;
     font-size: 0.9em;
-    padding: 0.75em 1em;
+    padding: 0em 1em;
     line-height: 1.4;
     background-color: var(--bg-color);
-    position: relative;
+    position: absolute;
     color: var(--text-color);
-    transform: translateX(110%) translateY(-100%);
+    transform: translateX(calc(800px + 1em)) translateY(calc(-100% - 0.5em));
     will-change: transform;
 }
 
@@ -336,20 +342,30 @@ pre.numberSource {
 }
 
 .rainbow {
-    background: linear-gradient(to right, #f00, #ff2b00, #f50, #ff8000, #fa0, #ffd500, #ff0, #d4ff00, #af0, #80ff00, #5f0, #2bff00, #0f0, #00ff2a, #0f5, #00ff80, #0fa, #00ffd5, #0ff, #00d5ff, #0af, #0080ff, #05f, #002aff, #00f, #2b00ff, #50f, #8000ff, #a0f, #d400ff, #f0f, #ff00d4, #f0a, #ff0080, #f05, #ff002b, #f00);
-    animation: rainbow-move-left-right 15s linear infinite alternate;
+    /* duplicate the color list twice so it wraps cleanly */
+    background: linear-gradient(to right,
+            #f00, #ff2b00, #f50, #ff8000, #fa0, #ffd500, #ff0, #d4ff00, #af0, #80ff00,
+            #5f0, #2bff00, #0f0, #00ff2a, #0f5, #00ff80, #0fa, #00ffd5, #0ff, #00d5ff,
+            #0af, #0080ff, #05f, #002aff, #00f, #2b00ff, #50f, #8000ff, #a0f, #d400ff,
+            #f0f, #ff00d4, #f0a, #ff0080, #f05, #ff002b, #f00,
+            #f00, #ff2b00, #f50, #ff8000, #fa0, #ffd500, #ff0, #d4ff00, #af0, #80ff00,
+            #5f0, #2bff00, #0f0, #00ff2a, #0f5, #00ff80, #0fa, #00ffd5, #0ff, #00d5ff,
+            #0af, #0080ff, #05f, #002aff, #00f, #2b00ff, #50f, #8000ff, #a0f, #d400ff,
+            #f0f, #ff00d4, #f0a, #ff0080, #f05, #ff002b, #f00);
+    background-size: 400% auto;
+    animation: rainbow-slide 15s linear infinite;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-@keyframes rainbow-move-left-right {
-    0% {
-        background-position: -500px 0;
+@keyframes rainbow-slide {
+    from {
+        background-position: 0% 0;
     }
 
-    100% {
-        background-position: 0 0;
+    to {
+        background-position: -200% 0;
     }
 }
 
@@ -359,6 +375,8 @@ pre.numberSource {
         float: none;
         clear: both;
         width: 100%;
+        position: relative;
+        right: 0;
         margin: 0;
         padding: 0;
         border-radius: 0;

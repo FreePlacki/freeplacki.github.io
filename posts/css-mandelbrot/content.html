@@ -22,6 +22,12 @@
         <li><a href="#laying-the-foundation-variables"
         id="toc-laying-the-foundation-variables">Laying the foundation,
         variables</a></li>
+        <li><a href="#the-first-iteration"
+        id="toc-the-first-iteration">The first iteration</a></li>
+        <li><a href="#fixing-the-problems"
+        id="toc-fixing-the-problems">Fixing the problems</a></li>
+        <li><a href="#more-iterations" id="toc-more-iterations">More
+        iterations</a></li>
         </ul>
     </nav>
     
@@ -100,14 +106,16 @@
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>20</mn><mo>×</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">20\times20</annotation></semantics></math>
     image for a total of
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>400</mn><annotation encoding="application/x-tex">400</annotation></semantics></math>
-    <code>div</code>s… Ok
-    <code>400i&lt;div&gt;&lt;/div&gt;&lt;CR&gt;&lt;ESC&gt;</code>
-    done.</p>
+    <code>div</code>s…</p>
     <div class="sidenote">
     <p>I get a weird feeling in my stomach when the size of my code
     scales with the size of the output, but hey, HTML is not a
     programming language, so it’s fine, <small>right?</small></p>
-    <p>Also vim btw.</p>
+    </div>
+    <p>Ok <code>400i&lt;div&gt;&lt;/div&gt;&lt;CR&gt;&lt;Esc&gt;</code>
+    done.</p>
+    <div class="sidenote">
+    <p>vim btw.</p>
     </div>
     <p>We’re gonna need some way to identify them to be able to
     calculate their colors later. That’s where <span
@@ -155,6 +163,149 @@
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">background-color</span><span class="ch">:</span> <span class="fu">rgba(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">calc(var(</span><span class="va">--x</span><span class="fu">)</span> <span class="op">*</span> <span class="fu">var(</span><span class="va">--y</span><span class="fu">)</span> <span class="op">/</span> <span class="fu">pow(var(</span><span class="va">--s</span><span class="fu">)</span><span class="op">,</span> <span class="dv">2</span><span class="fu">)))</span><span class="op">;</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+    <p>It’s <a
+    href="https://developer.mozilla.org/en-US/docs/Web/CSS/calc#examples">most
+    often used</a> for its ability to combine different units. For
+    example if you wanted an element to take up 100% of the width but
+    with some room for margins: <code>width: calc(100% - 80px);</code>.
+    We’ll keep it simple though and just use it in one place – to
+    compute the alpha values of our divs (as above).</p>
+    <h2 id="the-first-iteration">The first iteration</h2>
+    <p>Now for the core question – how do we actually compute the alpha
+    values to make the Mandelbrot set appear?</p>
+    <p>As I explained at the <a href="#what">beginning</a>, the usual
+    approach is to count the number of iterations it takes the value to
+    cross a certain threshold, but the thing is, it’s not easy to get
+    CSS to do loops. So we’re gonna use a fixed number of iterations
+    (you’ll see how in a minute) and then map the magnitude (distance
+    from the origin) of a number to the alpha value of the corresponding
+    <code>div</code>. Intuition: if after our fixed number of iterations
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">|</mo><mi>z</mi><mo stretchy="true" form="postfix">|</mo></mrow><annotation encoding="application/x-tex">|z|</annotation></semantics></math>
+    will be large it means that it probably diverges quickly, so we’ll
+    map it to a low alpha value and if
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">|</mo><mi>z</mi><mo stretchy="true" form="postfix">|</mo></mrow><annotation encoding="application/x-tex">|z|</annotation></semantics></math>
+    is small it’s probably in the set <code>-&gt;</code> high alpha.</p>
+    <p>Let’s start simple – just one iteration. Meaning we apply
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>z</mi><mn>2</mn></msup><mo>+</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">f(z) = z^2 + c</annotation></semantics></math>
+    once starting with
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z = 0</annotation></semantics></math>
+    and c being the point represented by a specific <code>div</code>.
+    Then we just need to get the magnitude:
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">|</mo><mi>z</mi><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup><mo>=</mo><mi>ℜ</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mi>ℑ</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">|z|^2 = \mathfrak{R}(z)^2 + \mathfrak{I}(z)^2</annotation></semantics></math>.</p>
+    <p>We’ll use python to generate the <code>calc</code> call to use as
+    the alpha value in CSS.</p>
+    <div class="sourceCode" id="cb5"><pre
+    class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sq(num):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f&quot;pow(</span><span class="sc">{</span>num<span class="sc">}</span><span class="ss">,2)&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> var(name):</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f&quot;var(--</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">)&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> var(<span class="st">&#39;x&#39;</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> var(<span class="st">&#39;y&#39;</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gen_iters():</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f&quot;</span><span class="sc">{</span>sq(x)<span class="sc">}</span><span class="ss"> + </span><span class="sc">{</span>sq(y)<span class="sc">}</span><span class="ss">&quot;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(gen_iters())</span></code></pre></div>
+    <p>This gets us <code>pow(var(--x),2) + pow(var(--y),2)</code> and
+    pasting it for the alpha value of our <code>divs</code>’s
+    <code>background-color</code>… All turned white.</p>
+    <h2 id="fixing-the-problems">Fixing the problems</h2>
+    <p>That’s unsuprising. The alpha in <code>rgba</code> is in range
+    <code>0..1</code> and all our values are
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\ge 1</annotation></semantics></math>.
+    It seems we have to apply some <span
+    class="rainbow">mappings</span>.</p>
+    <div class="sidenote">
+    <p>Ok, no more rainbows…</p>
+    </div>
+    <p><strong>First</strong>: the Mandelbrot set tastes best when
+    served in roughly
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mi>−</mi><mn>2.0</mn><mo>,</mo><mn>1.0</mn><mo stretchy="true" form="postfix">]</mo></mrow><mo>×</mo><mrow><mo stretchy="true" form="prefix">[</mo><mi>−</mi><mn>1.5</mn><mo>,</mo><mn>1.5</mn><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">[-2.0, 1.0] \times [-1.5, 1.5]</annotation></semantics></math>
+    range. Right now we have
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mn>1.0</mn><mo>,</mo><mn>20.0</mn><mo stretchy="true" form="postfix">]</mo></mrow><mo>×</mo><mrow><mo stretchy="true" form="prefix">[</mo><mn>1.0</mn><mo>,</mo><mn>20.0</mn><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">[1.0, 20.0] \times [1.0, 20.0]</annotation></semantics></math>
+    so pretty far from ideal. As a general problem statement: we have a
+    value
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mrow><mo stretchy="true" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">x \in [a, b]</annotation></semantics></math>
+    and want to map it to be in
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mi>c</mi><mo>,</mo><mi>d</mi><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[c, d]</annotation></semantics></math>.</p>
+    <div class="sidenote">
+    <p>This is a very common problem and I go through this process all
+    the time.</p>
+    </div>
+    <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mn>1</mn><mi>.</mi><mspace width="0.222em"></mspace></mtd><mtd columnalign="left" style="text-align: left"><mi>x</mi><mo>−</mo><mi>a</mi></mtd><mtd columnalign="right" style="text-align: right"><mo>∈</mo></mtd><mtd columnalign="left" style="text-align: left"><mrow><mo stretchy="true" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>b</mi><mo>−</mo><mi>a</mi><mo stretchy="true" form="postfix">]</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mn>2</mn><mi>.</mi><mspace width="0.222em"></mspace></mtd><mtd columnalign="left" style="text-align: left"><mfrac><mrow><mi>x</mi><mo>−</mo><mi>a</mi></mrow><mrow><mi>b</mi><mo>−</mo><mi>a</mi></mrow></mfrac></mtd><mtd columnalign="right" style="text-align: right"><mo>∈</mo></mtd><mtd columnalign="left" style="text-align: left"><mrow><mo stretchy="true" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">]</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mn>3</mn><mi>.</mi><mspace width="0.222em"></mspace></mtd><mtd columnalign="left" style="text-align: left"><mfrac><mrow><mi>x</mi><mo>−</mo><mi>a</mi></mrow><mrow><mi>b</mi><mo>−</mo><mi>a</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>d</mi><mo>−</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="right" style="text-align: right"><mo>∈</mo></mtd><mtd columnalign="left" style="text-align: left"><mrow><mo stretchy="true" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>d</mi><mo>−</mo><mi>c</mi><mo stretchy="true" form="postfix">]</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mn>4</mn><mi>.</mi><mspace width="0.222em"></mspace></mtd><mtd columnalign="left" style="text-align: left"><mfrac><mrow><mi>x</mi><mo>−</mo><mi>a</mi></mrow><mrow><mi>b</mi><mo>−</mo><mi>a</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>d</mi><mo>−</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>c</mi></mtd><mtd columnalign="right" style="text-align: right"><mo>∈</mo></mtd><mtd columnalign="left" style="text-align: left"><mrow><mo stretchy="true" form="prefix">[</mo><mi>c</mi><mo>,</mo><mi>d</mi><mo stretchy="true" form="postfix">]</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">
+    \begin{aligned}
+    1.\ &amp; x - a &amp;\in &amp;[0, b-a] \\
+    2.\ &amp; \frac{x-a}{b-a} &amp;\in &amp;[0, 1] \\
+    3.\ &amp; \frac{x-a}{b-a}(d-c) &amp;\in &amp;[0, d-c] \\
+    4.\ &amp; \frac{x-a}{b-a}(d-c) + c &amp;\in &amp;[c, d]
+    \end{aligned}
+    </annotation></semantics></math></p>
+    <p>Voilà. Some python follows.</p>
+    <div class="sourceCode" id="cb6"><pre
+    class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scale(x, a_to, b_to, a_from<span class="op">=</span><span class="dv">1</span>, b_from<span class="op">=</span><span class="dv">20</span>):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Maps x that is in [a_from, b_from] to be in [a_to, b_to]</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f&quot;</span><span class="sc">{</span>a_to<span class="sc">}</span><span class="ss"> + (</span><span class="sc">{</span>x<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>a_from<span class="sc">}</span><span class="ss">)*(</span><span class="sc">{</span>b_to<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>a_to<span class="sc">}</span><span class="ss">)/(</span><span class="sc">{</span>b_from<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>a_from<span class="sc">}</span><span class="ss">)&quot;</span></span></code></pre></div>
+    <p>If you look closely you might notice that I put whitespace around
+    <code>+</code> and <code>-</code> but not around <code>*</code> and
+    <code>/</code>. The code we’ll generate later is going to get a
+    little large so I wanted to at least save up on some whitespace. The
+    spaces around <code>+</code> and <code>-</code> <a
+    href="https://developer.mozilla.org/en-US/docs/Web/CSS/calc-sum#description">are
+    necessary</a> though as CSS uses them to distinguish from unary
+    <code>+</code> and <code>-</code> (for example
+    <code>calc(1-2)</code> is interpreted as <code>1</code> followed by
+    <code>-2</code>).</p>
+    <div class="sidenote">
+    <p>Thanks to CSS’s <a
+    href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_syntax/Error_handling">lovely
+    error handling</a> this is a fact that I will remember for a long
+    time.</p>
+    </div>
+    <p><strong>Second</strong>: Right now our outputted alpha values are
+    in
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>∞</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">[0, \infty)</annotation></semantics></math>
+    and we need them to be in
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1.0</mn><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0, 1.0]</annotation></semantics></math>.
+    Our previous method doesn’t digest infinities well so we need
+    something different. There are many different approaches but I
+    personally like the <a
+    href="https://en.wikipedia.org/wiki/Sigmoid_function">sigmoid</a>.</p>
+    <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mi>−</mi><mi>x</mi></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+    \sigma(x) = \frac{1}{1+e^{-x}}
+    </annotation></semantics></math></p>
+    <p>It maps the nonnegative values to
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>0.5</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0.5, 1]</annotation></semantics></math>
+    so we’ll take
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>σ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">2\sigma(-x)</annotation></semantics></math>
+    which also makes it so that magnitudes close to 0 (in the set) get
+    an alpha close to 1 (that’s just so it plays nicely with the site’s
+    darkmode).</p>
+    <p>Integrating it back to our little script. First the
+    coordinates:</p>
+    <div class="sourceCode" id="cb7"><pre
+    class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> scale(var(<span class="st">&#39;x&#39;</span>), var(<span class="st">&#39;xa&#39;</span>), var(<span class="st">&#39;xb&#39;</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> scale(var(<span class="st">&#39;y&#39;</span>), var(<span class="st">&#39;ya&#39;</span>), var(<span class="st">&#39;yb&#39;</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mapping(gen_iters(n)))</span></code></pre></div>
+    <p>I thought it might be a good idea to keep the values as CSS
+    variables for easy access.</p>
+    <div class="sourceCode" id="cb8"><pre
+    class="sourceCode css"><code class="sourceCode css"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#mandelbrot</span> {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* ... */</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">--xa</span><span class="ch">:</span> <span class="fu">var(</span><span class="dv">-2.0</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">--xb</span><span class="ch">:</span> <span class="fu">var(</span><span class="dv">1.0</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">--ya</span><span class="ch">:</span> <span class="fu">var(</span><span class="dv">-1.5</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">--yb</span><span class="ch">:</span> <span class="fu">var(</span><span class="dv">1.5</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+    <p>Nice! It seems that now all we need is…</p>
+    <h2 id="more-iterations">More iterations</h2>
+    <p>TODO</p>
 </body>
 
 </html>
