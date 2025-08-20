@@ -28,6 +28,9 @@
         id="toc-fixing-the-problems">Fixing the problems</a></li>
         <li><a href="#more-iterations" id="toc-more-iterations">More
         iterations</a></li>
+        <li><a href="#zooming-in" id="toc-zooming-in">Zooming
+        in</a></li>
+        <li><a href="#the-end" id="toc-the-end">The end</a></li>
         </ul>
     </nav>
     
@@ -284,8 +287,7 @@
     which also makes it so that magnitudes close to 0 (in the set) get
     an alpha close to 1 (that’s just so it plays nicely with the site’s
     darkmode).</p>
-    <p>Integrating it back to our little script. First the
-    coordinates:</p>
+    <p>Integrating it back to our little script.</p>
     <div class="sourceCode" id="cb7"><pre
     class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> scale(var(<span class="st">&#39;x&#39;</span>), var(<span class="st">&#39;xa&#39;</span>), var(<span class="st">&#39;xb&#39;</span>))</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> scale(var(<span class="st">&#39;y&#39;</span>), var(<span class="st">&#39;ya&#39;</span>), var(<span class="st">&#39;yb&#39;</span>))</span>
@@ -305,7 +307,132 @@
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
     <p>Nice! It seems that now all we need is…</p>
     <h2 id="more-iterations">More iterations</h2>
-    <p>TODO</p>
+    <p>We want to apply
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>z</mi><mn>2</mn></msup><mo>+</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">f(z) = z^2 + c</annotation></semantics></math>
+    a total of
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+    times (which I will denote
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f^{(n)}(z)</annotation></semantics></math>)
+    starting at
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>
+    and
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+    being the number represented by specific coordinates and then
+    calculate |z|^2. To get
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mrow><mo stretchy="true" form="prefix">|</mo><mi>z</mi><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup><annotation encoding="application/x-tex">|z|^2</annotation></semantics></math>
+    we need to compute the real and imaginary parts of
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f^{(n)}(z)</annotation></semantics></math>.</p>
+    <p>Denote
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mi>x</mi><mo>+</mo><mi>y</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">c=x+yi</annotation></semantics></math>
+    and say that after
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>
+    iterations we got
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">f^{(n-1)}(z) = a+bi</annotation></semantics></math>
+    for some
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">a, b \in \mathbb R</annotation></semantics></math>
+    and so</p>
+    <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>+</mo><mi>b</mi><mi>i</mi><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mi>y</mi><mi>i</mi><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>b</mi><mi>i</mi><mo>−</mo><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mi>y</mi><mi>i</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">f^{(n)}(z) = (a+bi)^2 + x+yi = a^2+2abi-b^2+x+yi.</annotation></semantics></math></p>
+    <p>Grouping the real and imaginary parts we get</p>
+    <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">|</mo><msup><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><msup><mi>b</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><mi>a</mi><mi>b</mi><mo>+</mo><mi>y</mi><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">|f^{(n)}(z)|^2 = (a^2-b^2+x)^2 + (2ab+y)^2.</annotation></semantics></math></p>
+    <p>This equation translates literally to a simple recursive
+    function:</p>
+    <div class="sourceCode" id="cb9"><pre
+    class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gen_iters(n):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">    |z|^2 after n iterations</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> rec(num, i):</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> num</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        (re, im) <span class="op">=</span> rec(num, i<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (<span class="ss">f&quot;</span><span class="sc">{</span>sq(re)<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>sq(im)<span class="sc">}</span><span class="ss"> + </span><span class="sc">{</span>x<span class="sc">}</span><span class="ss">&quot;</span>, <span class="ss">f&quot;2*(</span><span class="sc">{</span>re<span class="sc">}</span><span class="ss">)*(</span><span class="sc">{</span>im<span class="sc">}</span><span class="ss">) + </span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    (re, im) <span class="op">=</span> rec((x, y), n<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f&quot;</span><span class="sc">{</span>sq(re)<span class="sc">}</span><span class="ss"> + </span><span class="sc">{</span>sq(im)<span class="sc">}</span><span class="ss">&quot;</span></span></code></pre></div>
+    <p>I find that
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">n=6</annotation></semantics></math>
+    works well, anything more might be too much.</p>
+    <div class="sourceCode" id="cb10"><pre
+    class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">6</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mapping(gen_iters(n)))</span></code></pre></div>
+    <h2 id="zooming-in">Zooming in</h2>
+    <p>The picture we got looks… ok but with only 400 pixels it’s hard
+    to see much details. A cool effect we can add is zooming in on an
+    area around the cursor.</p>
+    <p>If you think about what it means to <em>zoom in</em> in our case
+    it’s just changing the bounds (for example with changing
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mi>−</mi><mn>2.0</mn><mo>,</mo><mn>1.0</mn><mo stretchy="true" form="postfix">]</mo></mrow><mo>×</mo><mrow><mo stretchy="true" form="prefix">[</mo><mi>−</mi><mn>1.5</mn><mo>,</mo><mn>1.5</mn><mo stretchy="true" form="postfix">]</mo></mrow><mo>→</mo><mrow><mo stretchy="true" form="prefix">[</mo><mi>−</mi><mn>1.0</mn><mo>,</mo><mn>0.5</mn><mo stretchy="true" form="postfix">]</mo></mrow><mo>×</mo><mrow><mo stretchy="true" form="prefix">[</mo><mi>−</mi><mn>0.75</mn><mo>,</mo><mn>0.75</mn><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">[-2.0, 1.0]\times [-1.5, 1.5] \to [-1.0, 0.5] \times [-0.75, 0.75]</annotation></semantics></math>
+    will zoom in <code>2x</code> around the origin).</p>
+    <p>The plan is as follows:</p>
+    <ol type="1">
+    <li>Somehow get the cursor position</li>
+    <li>Map it’s coordinates
+    (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mn>1</mn><mo>,</mo><mn>20</mn><mo stretchy="true" form="postfix">]</mo></mrow><mo>×</mo><mrow><mo stretchy="true" form="prefix">[</mo><mn>1</mn><mo>,</mo><mn>20</mn><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">[1, 20] \times [1,20]</annotation></semantics></math>)
+    to our coordinates
+    (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mi>−</mi><mn>2.0</mn><mo>,</mo><mn>1.0</mn><mo stretchy="true" form="postfix">]</mo></mrow><mo>×</mo><mrow><mo stretchy="true" form="prefix">[</mo><mi>−</mi><mn>1.5</mn><mo>,</mo><mn>1.5</mn><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">[-2.0, 1.0] \times [-1.5, 1.5]</annotation></semantics></math>)</li>
+    <li>Change the bounds to be
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">cursor_pos</mtext><mo>±</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">\text{cursor_pos} \pm 0.5</annotation></semantics></math></li>
+    </ol>
+    <p>As for the first step we’ll use the CSS’s <a
+    href="https://developer.mozilla.org/en-US/docs/Web/CSS/:has">:has()
+    pseudoclass</a>. Let me show you the snippet first:</p>
+    <div class="sourceCode" id="cb11"><pre
+    class="sourceCode css"><code class="sourceCode css"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#mandelbrot</span><span class="in">:has(</span>div<span class="ex">[</span><span class="ss">style</span><span class="op">*=</span><span class="st">&quot;--x:3;&quot;</span><span class="ex">]</span><span class="in">:hover)</span> {</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* </span><span class="al">TODO</span><span class="co">: change bounds */</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+    <p>We want to select the container <code>div</code> because that’s
+    where the variables controlling the bounds live. The styles defined
+    here will execute if our container div <em>has</em> a
+    <code>div</code> with a style attribute <a
+    href="https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors">containing</a>
+    <code>"--x:3;"</code> that is currently <em>hovered</em>.</p>
+    <p>Copying this for for all other values of <code>--x</code> and
+    <code>--y</code> we effectively know the cursor’s position.</p>
+    <div class="sidenote">
+    <p>This approach makes it harder to increase the size of our grid as
+    we’ll also have add move styles now. But at least it’s a linear
+    relation and not quadratic as before…</p>
+    </div>
+    <p>Now for steps 2 and 3. We’ll use the same <a
+    href="#fixing-the-problems">formula</a> to map the cursor position
+    that is initially initially in
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mn>1</mn><mo>,</mo><mtext mathvariant="monospace">–𝚜</mtext><mo stretchy="true" form="postfix">]</mo></mrow><mo>×</mo><mrow><mo stretchy="true" form="prefix">[</mo><mn>1</mn><mo>,</mo><mtext mathvariant="monospace">–𝚜</mtext><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">[1, \texttt{--s}] \times [1, \texttt{--s}]</annotation></semantics></math>
+    (<code>--s: 20;</code>) to be in
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtext mathvariant="monospace">–𝚍𝚎𝚏-𝚡𝚊</mtext><mo>,</mo><mtext mathvariant="monospace">–𝚍𝚎𝚏-𝚡𝚊</mtext><mo stretchy="true" form="postfix">]</mo></mrow><mo>×</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtext mathvariant="monospace">–𝚍𝚎𝚏-𝚢𝚊</mtext><mo>,</mo><mtext mathvariant="monospace">–𝚍𝚎𝚏-𝚢𝚋</mtext><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">[\texttt{--def-xa}, \texttt{--def-xa}] \times [\texttt{--def-ya}, \texttt{--def-yb}]</annotation></semantics></math>.
+    Then just add
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>0.5</mn></mrow><annotation encoding="application/x-tex">\pm 0.5</annotation></semantics></math>
+    and we’re done.</p>
+    <div class="sourceCode" id="cb12"><pre
+    class="sourceCode css"><code class="sourceCode css"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#mandelbrot</span><span class="in">:has(</span>div<span class="ex">[</span><span class="ss">style</span><span class="op">*=</span><span class="st">&quot;--x:3;&quot;</span><span class="ex">]</span><span class="in">:hover)</span> {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">--xa</span><span class="ch">:</span> <span class="fu">calc(var(</span><span class="va">--def-xa</span><span class="fu">)</span> <span class="op">+</span> (<span class="dv">3</span> <span class="op">-</span> <span class="dv">1</span>)<span class="op">*</span>(<span class="fu">var(</span><span class="va">--def-xb</span><span class="fu">)</span> <span class="op">-</span> <span class="fu">var(</span><span class="va">--def-xa</span><span class="fu">)</span>)<span class="op">/</span>(<span class="fu">var(</span><span class="va">--s</span><span class="fu">)</span> <span class="op">-</span> <span class="dv">1</span>) <span class="op">-</span> <span class="dv">0.5</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">--xb</span><span class="ch">:</span> <span class="fu">calc(var(</span><span class="va">--def-xa</span><span class="fu">)</span> <span class="op">+</span> (<span class="dv">3</span> <span class="op">-</span> <span class="dv">1</span>)<span class="op">*</span>(<span class="fu">var(</span><span class="va">--def-xb</span><span class="fu">)</span> <span class="op">-</span> <span class="fu">var(</span><span class="va">--def-xa</span><span class="fu">)</span>)<span class="op">/</span>(<span class="fu">var(</span><span class="va">--s</span><span class="fu">)</span> <span class="op">-</span> <span class="dv">1</span>) <span class="op">+</span> <span class="dv">0.5</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+    <p>Since we’re using those variables in our alpha calculation the
+    image will change automatically.</p>
+    <h2 id="the-end">The end</h2>
+    <p>Check out the <a
+    href="https://freeplacki.github.io/cssbrot">demo</a> and <a
+    href="https://github.com/FreePlacki/cssbrot">source code</a>. If you
+    have any improvements or spotted a mistake feel free to drop an <a
+    href="https://github.com/FreePlacki/cssbrot/issues">issue</a>, same
+    goes for this post <a
+    href="https://github.com/FreePlacki/freeplacki.github.io/issues">here</a>.</p>
+    <p>Here are some additional ideas to implement:</p>
+    <ol type="1">
+    <li>Right now we’re only doing grayscale, not much stopping you from
+    using a different color pallete.</li>
+    <li>It would be cool to be able to adjust the zoom level
+    dynamically.</li>
+    <li>We’re starting the itarations at
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>.
+    Experiment with different values and maybe changing the starting
+    point dynamically. Also try having a fixed
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+    with
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+    representing the coordinates.</li>
+    </ol>
 </body>
 
 </html>

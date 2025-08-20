@@ -1,28 +1,28 @@
 :root {
     /* https://github.com/morhetz/gruvbox */
     /* Gruvbox Light */
-    --bg-color: #fbf1c7;
-    --text-color: #3c3836;
+    --bg-color: #f9f5d7;
+    --text-color: #282828;
 
-    --red: #9d0006;
-    --green: #79740e;
-    --yellow: #b57614;
-    --blue: #076678;
-    --purple: #8f3f71;
-    --aqua: #427b58;
-    --gray: #928374;
+    --red: #cc241d;
+    --green: #98971a;
+    --yellow: #d79921;
+    --blue: #458588;
+    --purple: #b16286;
+    --aqua: #689d6a;
+    --gray: #7c6f64;
 
     /* Gruvbox Light Hard */
-    --bg-color-h: #f9f5d7;
-    --text-color-h: #282828;
+    --bg-color-h: #fbf1c7;
+    --text-color-h: #3c3836;
 
-    --red-h: #cc241d;
-    --green-h: #98971a;
-    --yellow-h: #d79921;
-    --blue-h: #458588;
-    --purple-h: #b16286;
-    --aqua-h: #689d6a;
-    --gray-h: #7c6f64;
+    --red-h: #9d0006;
+    --green-h: #79740e;
+    --yellow-h: #b57614;
+    --blue-h: #076678;
+    --purple-h: #8f3f71;
+    --aqua-h: #427b58;
+    --gray-h: #928374;
 }
 
 @media (prefers-color-scheme: dark) {

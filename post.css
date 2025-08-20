@@ -440,7 +440,7 @@ pre.numberSource {
     color: var(--blue);
 }
 
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 1580px) {
     #TOC {
         display: none;
     }

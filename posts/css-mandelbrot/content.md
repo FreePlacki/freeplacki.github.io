@@ -212,7 +212,7 @@ It maps the nonnegative values to $[0.5, 1]$ so we'll take $2\sigma(-x)$ which a
 makes it so that magnitudes close to 0 (in the set) get an alpha close to 1
 (that's just so it plays nicely with the site's darkmode).
 
-Integrating it back to our little script. First the coordinates:
+Integrating it back to our little script.
 
 ```python
 x = scale(var('x'), var('xa'), var('xb'))
@@ -239,4 +239,110 @@ Nice! It seems that now all we need is...
 
 ## More iterations
 
-TODO
+We want to apply $f(z) = z^2 + c$ a total of $n$ times (which I will denote $f^{(n)}(z)$)
+starting at $z=0$ and $c$ being the number represented by specific coordinates and
+then calculate |z|^2. To get $|z|^2$ we need to compute the real and imaginary parts
+of $f^{(n)}(z)$.
+
+Denote $c=x+yi$ and say that after $n-1$ iterations we got
+$f^{(n-1)}(z) = a+bi$ for some $a, b \in \mathbb R$ and so
+
+$$f^{(n)}(z) = (a+bi)^2 + x+yi = a^2+2abi-b^2+x+yi.$$
+
+Grouping the real and imaginary parts we get
+
+$$|f^{(n)}(z)|^2 = (a^2-b^2+x)^2 + (2ab+y)^2.$$
+
+This equation translates literally to a simple recursive function:
+
+```python
+def gen_iters(n):
+    """
+    |z|^2 after n iterations
+    """
+
+    def rec(num, i):
+        if i == 0:
+            return num
+        (re, im) = rec(num, i-1)
+        return (f"{sq(re)} - {sq(im)} + {x}", f"2*({re})*({im}) + {y}")
+
+    (re, im) = rec((x, y), n-1)
+    return f"{sq(re)} + {sq(im)}"
+```
+
+I find that $n=6$ works well, anything more might be too much.
+
+```python
+n = 6
+print(mapping(gen_iters(n)))
+```
+
+## Zooming in
+
+The picture we got looks... ok but with only 400 pixels it's hard to see much details.
+A cool effect we can add is zooming in on an area around the cursor.
+
+If you think about what it means to _zoom in_ in our case it's just changing the
+bounds (for example with changing $[-2.0, 1.0]\times [-1.5, 1.5] \to [-1.0, 0.5] \times [-0.75, 0.75]$
+will zoom in `2x` around the origin).
+
+The plan is as follows:
+
+1. Somehow get the cursor position
+2. Map it's coordinates ($[1, 20] \times [1,20]$) to our coordinates ($[-2.0, 1.0] \times [-1.5, 1.5]$)
+3. Change the bounds to be $\text{cursor_pos} \pm 0.5$
+
+As for the first step we'll use the CSS's [:has() pseudoclass](https://developer.mozilla.org/en-US/docs/Web/CSS/:has).
+Let me show you the snippet first:
+
+```css
+#mandelbrot:has(div[style*="--x:3;"]:hover) {
+    /* TODO: change bounds */
+}
+```
+
+We want to select the container `div` because that's where the variables controlling the
+bounds live. The styles defined here will execute if our container div _has_ a `div`
+with a style attribute [containing](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors)
+`"--x:3;"` that is currently _hovered_.
+
+Copying this for for all other values of `--x` and `--y` we effectively know the
+cursor's position.
+
+::: {.sidenote}
+This approach makes it harder to increase the size of our grid as we'll also have
+add move styles now. But at least it's a linear relation and not quadratic as before...
+:::
+
+Now for steps 2 and 3. We'll use the same [formula](#fixing-the-problems) to map
+the cursor position that is initially initially in
+$[1, \texttt{--s}] \times [1, \texttt{--s}]$ (`--s: 20;`)
+to be in
+$[\texttt{--def-xa}, \texttt{--def-xa}] \times [\texttt{--def-ya}, \texttt{--def-yb}]$.
+Then just add $\pm 0.5$ and we're done.
+
+```css
+#mandelbrot:has(div[style*="--x:3;"]:hover) {
+    --xa: calc(var(--def-xa) + (3 - 1)*(var(--def-xb) - var(--def-xa))/(var(--s) - 1) - 0.5);
+    --xb: calc(var(--def-xa) + (3 - 1)*(var(--def-xb) - var(--def-xa))/(var(--s) - 1) + 0.5);
+}
+```
+
+Since we're using those variables in our alpha calculation the image will change
+automatically.
+
+## The end
+
+Check out the [demo](https://freeplacki.github.io/cssbrot)
+and [source code](https://github.com/FreePlacki/cssbrot).
+If you have any improvements or spotted a mistake feel free to drop an [issue](https://github.com/FreePlacki/cssbrot/issues), same goes for this post [here](https://github.com/FreePlacki/freeplacki.github.io/issues).
+
+Here are some additional ideas to implement:
+
+1. Right now we're only doing grayscale, not much stopping you from using a different
+color pallete.
+2. It would be cool to be able to adjust the zoom level dynamically.
+3. We're starting the itarations at $z=0$. Experiment with different values and
+maybe changing the starting point dynamically. Also try having a fixed $c$ with
+$z$ representing the coordinates.
