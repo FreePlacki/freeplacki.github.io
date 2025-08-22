@@ -169,10 +169,11 @@
     <p>It’s <a
     href="https://developer.mozilla.org/en-US/docs/Web/CSS/calc#examples">most
     often used</a> for its ability to combine different units. For
-    example if you wanted an element to take up 100% of the width but
-    with some room for margins: <code>width: calc(100% - 80px);</code>.
-    We’ll keep it simple though and just use it in one place – to
-    compute the alpha values of our divs (as above).</p>
+    example if you wanted an element to take up <code>100%</code> of the
+    width but with some room for margins:
+    <code>width: calc(100% - 80px);</code>. We’ll keep it simple though
+    and just use it in one place – to compute the alpha values of our
+    divs (as above).</p>
     <h2 id="the-first-iteration">The first iteration</h2>
     <p>Now for the core question – how do we actually compute the alpha
     values to make the Mandelbrot set appear?</p>
@@ -192,8 +193,10 @@
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>z</mi><mn>2</mn></msup><mo>+</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">f(z) = z^2 + c</annotation></semantics></math>
     once starting with
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z = 0</annotation></semantics></math>
-    and c being the point represented by a specific <code>div</code>.
-    Then we just need to get the magnitude:
+    and
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+    being the point represented by a specific <code>div</code>. Then we
+    just need to get the magnitude:
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">|</mo><mi>z</mi><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup><mo>=</mo><mi>ℜ</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mi>ℑ</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">|z|^2 = \mathfrak{R}(z)^2 + \mathfrak{I}(z)^2</annotation></semantics></math>.</p>
     <p>We’ll use python to generate the <code>calc</code> call to use as
     the alpha value in CSS.</p>
@@ -284,9 +287,11 @@
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>0.5</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0.5, 1]</annotation></semantics></math>
     so we’ll take
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>σ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">2\sigma(-x)</annotation></semantics></math>
-    which also makes it so that magnitudes close to 0 (in the set) get
-    an alpha close to 1 (that’s just so it plays nicely with the site’s
-    darkmode).</p>
+    which also makes it so that magnitudes close to
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+    (in the set) get an alpha close to
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+    (that’s just so it plays nicely with the site’s darkmode).</p>
     <p>Integrating it back to our little script.</p>
     <div class="sourceCode" id="cb7"><pre
     class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> scale(var(<span class="st">&#39;x&#39;</span>), var(<span class="st">&#39;xa&#39;</span>), var(<span class="st">&#39;xb&#39;</span>))</span>
@@ -318,7 +323,9 @@
     and
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
     being the number represented by specific coordinates and then
-    calculate |z|^2. To get
+    calculate
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mrow><mo stretchy="true" form="prefix">|</mo><mi>z</mi><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup><annotation encoding="application/x-tex">|z|^2</annotation></semantics></math>.
+    To get
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mrow><mo stretchy="true" form="prefix">|</mo><mi>z</mi><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup><annotation encoding="application/x-tex">|z|^2</annotation></semantics></math>
     we need to compute the real and imaginary parts of
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f^{(n)}(z)</annotation></semantics></math>.</p>
@@ -383,7 +390,7 @@
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
     <p>We want to select the container <code>div</code> because that’s
     where the variables controlling the bounds live. The styles defined
-    here will execute if our container div <em>has</em> a
+    here will execute if our container <code>div</code> <em>has</em> a
     <code>div</code> with a style attribute <a
     href="https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors">containing</a>
     <code>"--x:3;"</code> that is currently <em>hovered</em>.</p>

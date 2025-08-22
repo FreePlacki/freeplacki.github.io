@@ -104,8 +104,11 @@ blockquote {
 code {
     font-family: 'Cascadia Code', Menlo, Monaco, Consolas, monospace;
     font-variant-ligatures: normal;
+    background-color: var(--bg-color-h);
     margin: 0;
     hyphens: manual;
+    padding: 0.2em;
+    border-radius: 0.2em;
 }
 
 pre {
@@ -344,14 +347,13 @@ pre.numberSource {
 .rainbow {
     /* duplicate the color list twice so it wraps cleanly */
     background: linear-gradient(to right,
-            #f00, #ff2b00, #f50, #ff8000, #fa0, #ffd500, #ff0, #d4ff00, #af0, #80ff00,
-            #5f0, #2bff00, #0f0, #00ff2a, #0f5, #00ff80, #0fa, #00ffd5, #0ff, #00d5ff,
-            #0af, #0080ff, #05f, #002aff, #00f, #2b00ff, #50f, #8000ff, #a0f, #d400ff,
-            #f0f, #ff00d4, #f0a, #ff0080, #f05, #ff002b, #f00,
-            #f00, #ff2b00, #f50, #ff8000, #fa0, #ffd500, #ff0, #d4ff00, #af0, #80ff00,
-            #5f0, #2bff00, #0f0, #00ff2a, #0f5, #00ff80, #0fa, #00ffd5, #0ff, #00d5ff,
-            #0af, #0080ff, #05f, #002aff, #00f, #2b00ff, #50f, #8000ff, #a0f, #d400ff,
-            #f0f, #ff00d4, #f0a, #ff0080, #f05, #ff002b, #f00);
+            #fb4934, #fe8019, #fb4934, #fe8019, #fabd2f, #fabd2f, #fabd2f, #b8bb26, #b8bb26, #b8bb26,
+            #b8bb26, #8ec07c, #8ec07c, #8ec07c, #8ec07c, #8ec07c, #83a598, #83a598, #83a598, #83a598,
+            #83a598, #83a598, #d3869b, #d3869b, #d3869b, #d3869b, #d3869b, #d3869b, #fb4934, #fb4934,
+            #fb4934, #fe8019, #fb4934, #fe8019, #fabd2f, #fabd2f, #fabd2f, #b8bb26, #b8bb26, #b8bb26,
+            #b8bb26, #8ec07c, #8ec07c, #8ec07c, #8ec07c, #8ec07c, #83a598, #83a598, #83a598, #83a598,
+            #83a598, #83a598, #d3869b, #d3869b, #d3869b, #d3869b, #d3869b, #d3869b, #fb4934);
+
     background-size: 400% auto;
     animation: rainbow-slide 15s linear infinite;
     -webkit-background-clip: text;

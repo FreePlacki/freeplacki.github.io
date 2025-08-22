@@ -1,3 +1,7 @@
+---
+title: Mandelbrot set in CSS
+---
+
 ## What?
 
 If you somehow don't know what the [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set)
@@ -109,7 +113,7 @@ For that we'll need another key CSS feature -- the <span class="rainbow">calc</s
 
 It's [most often used](https://developer.mozilla.org/en-US/docs/Web/CSS/calc#examples)
 for its ability to combine different units. For example if you
-wanted an element to take up 100% of the width but with some room for margins:
+wanted an element to take up `100%` of the width but with some room for margins:
 `width: calc(100% - 80px);`. We'll keep it simple though and just use it in one place --
 to compute the alpha values of our divs (as above).
 
@@ -127,7 +131,7 @@ fixed number of iterations $|z|$ will be large it means that it probably diverge
 so we'll map it to a low alpha value and if $|z|$ is small it's probably in the set `->` high alpha.
 
 Let's start simple -- just one iteration. Meaning we apply $f(z) = z^2 + c$ once
-starting with $z = 0$ and c being the point represented by a specific `div`.
+starting with $z = 0$ and $c$ being the point represented by a specific `div`.
 Then we just need to get the magnitude: $|z|^2 = \mathfrak{R}(z)^2 + \mathfrak{I}(z)^2$.
 
 We'll use python to generate the `calc` call to use as the alpha value in CSS.
@@ -209,7 +213,7 @@ $$
 $$
 
 It maps the nonnegative values to $[0.5, 1]$ so we'll take $2\sigma(-x)$ which also
-makes it so that magnitudes close to 0 (in the set) get an alpha close to 1
+makes it so that magnitudes close to $0$ (in the set) get an alpha close to $1$
 (that's just so it plays nicely with the site's darkmode).
 
 Integrating it back to our little script.
@@ -241,7 +245,7 @@ Nice! It seems that now all we need is...
 
 We want to apply $f(z) = z^2 + c$ a total of $n$ times (which I will denote $f^{(n)}(z)$)
 starting at $z=0$ and $c$ being the number represented by specific coordinates and
-then calculate |z|^2. To get $|z|^2$ we need to compute the real and imaginary parts
+then calculate $|z|^2$. To get $|z|^2$ we need to compute the real and imaginary parts
 of $f^{(n)}(z)$.
 
 Denote $c=x+yi$ and say that after $n-1$ iterations we got
@@ -303,7 +307,7 @@ Let me show you the snippet first:
 ```
 
 We want to select the container `div` because that's where the variables controlling the
-bounds live. The styles defined here will execute if our container div _has_ a `div`
+bounds live. The styles defined here will execute if our container `div` _has_ a `div`
 with a style attribute [containing](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors)
 `"--x:3;"` that is currently _hovered_.
 
