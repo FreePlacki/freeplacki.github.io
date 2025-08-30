@@ -67,10 +67,10 @@
     <h2 id="why">Why?</h2>
     <p>You can generate such images with a few lines of pretty much any
     <em>reasonable</em> programming language. Doing it in pure HTML+CSS
-    presents some challanges. As we all know CSS is clearly <a
+    presents some challenges. As we all know, CSS is clearly <a
     href="https://stackoverflow.com/a/26445990">not Turing complete</a>
-    as there is no way to have infinite loops so if it was then we have
-    a contradiction with <a
+    as there is no way to have infinite loops, so if it was then we
+    would have a contradiction with <a
     href="https://en.wikipedia.org/wiki/Halting_problem">the Halting
     Problem</a>.</p>
     <blockquote>
@@ -104,8 +104,8 @@
     variables</h2>
     <p>As far as I’m aware there is no way to draw on the html canvas
     with just CSS and we are gonna need something to represent our
-    drawing, so we’re gonna use individal <code>div</code>s to represent
-    the pixels. Let’s go for a
+    drawing, so we’ll use individual <code>div</code>s to represent the
+    pixels. Let’s go for a
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>20</mn><mo>×</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">20\times20</annotation></semantics></math>
     image for a total of
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>400</mn><annotation encoding="application/x-tex">400</annotation></semantics></math>
@@ -394,16 +394,16 @@
     <code>div</code> with a style attribute <a
     href="https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors">containing</a>
     <code>"--x:3;"</code> that is currently <em>hovered</em>.</p>
-    <p>Copying this for for all other values of <code>--x</code> and
+    <p>Copying this for all other values of <code>--x</code> and
     <code>--y</code> we effectively know the cursor’s position.</p>
     <div class="sidenote">
     <p>This approach makes it harder to increase the size of our grid as
-    we’ll also have add move styles now. But at least it’s a linear
+    we’ll also have to add move styles now. But at least it’s a linear
     relation and not quadratic as before…</p>
     </div>
     <p>Now for steps 2 and 3. We’ll use the same <a
     href="#fixing-the-problems">formula</a> to map the cursor position
-    that is initially initially in
+    that is initially in
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mn>1</mn><mo>,</mo><mtext mathvariant="monospace">–𝚜</mtext><mo stretchy="true" form="postfix">]</mo></mrow><mo>×</mo><mrow><mo stretchy="true" form="prefix">[</mo><mn>1</mn><mo>,</mo><mtext mathvariant="monospace">–𝚜</mtext><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">[1, \texttt{--s}] \times [1, \texttt{--s}]</annotation></semantics></math>
     (<code>--s: 20;</code>) to be in
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtext mathvariant="monospace">–𝚍𝚎𝚏-𝚡𝚊</mtext><mo>,</mo><mtext mathvariant="monospace">–𝚍𝚎𝚏-𝚡𝚊</mtext><mo stretchy="true" form="postfix">]</mo></mrow><mo>×</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtext mathvariant="monospace">–𝚍𝚎𝚏-𝚢𝚊</mtext><mo>,</mo><mtext mathvariant="monospace">–𝚍𝚎𝚏-𝚢𝚋</mtext><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">[\texttt{--def-xa}, \texttt{--def-xa}] \times [\texttt{--def-ya}, \texttt{--def-yb}]</annotation></semantics></math>.

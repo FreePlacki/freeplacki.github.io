@@ -27,9 +27,9 @@ Try moving your cursor over it.
 ## Why?
 
 You can generate such images with a few lines of pretty much any *reasonable*
-programming language. Doing it in pure HTML+CSS presents some challanges.
-As we all know CSS is clearly [not Turing complete](https://stackoverflow.com/a/26445990)
-as there is no way to have infinite loops so if it was then we have a contradiction with
+programming language. Doing it in pure HTML+CSS presents some challenges.
+As we all know, CSS is clearly [not Turing complete](https://stackoverflow.com/a/26445990)
+as there is no way to have infinite loops, so if it was then we would have a contradiction with
 [the Halting Problem](https://en.wikipedia.org/wiki/Halting_problem).
 
 > Actually... it is. [Look](http://eli.fox-epste.in/rule110-full.html) I implemented [Rule 110](https://en.wikipedia.org/wiki/Rule_110).
@@ -46,7 +46,7 @@ modern CSS has features (that we will explore in a second) that allow you to do 
 ## Laying the foundation, variables
 
 As far as I'm aware there is no way to draw on the html canvas with just CSS and
-we are gonna need something to represent our drawing, so we're gonna use individal `div`s to
+we are gonna need something to represent our drawing, so we'll use individual `div`s to
 represent the pixels. Let's go for a $20\times20$ image for a total of $400$ `div`s...
 
 ::: {.sidenote}
@@ -311,16 +311,16 @@ bounds live. The styles defined here will execute if our container `div` _has_ a
 with a style attribute [containing](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors)
 `"--x:3;"` that is currently _hovered_.
 
-Copying this for for all other values of `--x` and `--y` we effectively know the
+Copying this for all other values of `--x` and `--y` we effectively know the
 cursor's position.
 
 ::: {.sidenote}
-This approach makes it harder to increase the size of our grid as we'll also have
+This approach makes it harder to increase the size of our grid as we'll also have to
 add move styles now. But at least it's a linear relation and not quadratic as before...
 :::
 
 Now for steps 2 and 3. We'll use the same [formula](#fixing-the-problems) to map
-the cursor position that is initially initially in
+the cursor position that is initially in
 $[1, \texttt{--s}] \times [1, \texttt{--s}]$ (`--s: 20;`)
 to be in
 $[\texttt{--def-xa}, \texttt{--def-xa}] \times [\texttt{--def-ya}, \texttt{--def-yb}]$.
