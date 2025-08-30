@@ -321,7 +321,7 @@ pre.numberSource {
 .sidenote {
     float: right;
     clear: right;
-    width: 340px;
+    width: 300px;
     margin: 0 0 0.5em 0.5em;
     font-size: 0.9em;
     padding: 0em 1em;
@@ -380,7 +380,7 @@ pre.numberSource {
         position: relative;
         right: 0;
         margin: 0;
-        padding: 0;
+        padding: 0.5em;
         border-radius: 0;
         border-top: 1px solid var(--blue);
         border-bottom: 1px solid var(--blue);
@@ -442,7 +442,7 @@ pre.numberSource {
     color: var(--blue);
 }
 
-@media screen and (max-width: 1580px) {
+@media screen and (max-width: 1500px) {
     #TOC {
         display: none;
     }
