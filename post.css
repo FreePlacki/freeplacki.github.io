@@ -3,6 +3,7 @@
 @media (max-width: 600px) {
     body {
         max-width: calc(100% - 2em);
+        font-size: 1em !important;
     }
 
     h1 {
@@ -316,6 +317,11 @@ pre.numberSource {
     pre>code.sourceCode>span>a:first-child::before {
         text-decoration: underline;
     }
+}
+
+p:has(> math) {
+    overflow: auto;
+    padding-bottom: 1px; /* for the bottom scrollbar */
 }
 
 .sidenote {
