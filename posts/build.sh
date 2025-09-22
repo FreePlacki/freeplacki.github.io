@@ -4,11 +4,9 @@ set -euo pipefail
 INPUT="content.md"
 OUTPUT="content.html"
 
-HIGHLIGHT_STYLE="tango"
 EXTRA_ARGS=(
   "--standalone"
   "--mathml"
-  "--highlight-style=${HIGHLIGHT_STYLE}"
   "--template=../template.html"
   "--toc"
   "--toc-depth=2" # include only h2 for the table of contents
