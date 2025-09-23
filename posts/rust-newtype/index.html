@@ -23,6 +23,9 @@
         problem</a></li>
         <li><a href="#the-new-types" id="toc-the-new-types">The new
         types</a></li>
+        <li><a href="#rethinking-the-conversion-trait"
+        id="toc-rethinking-the-conversion-trait">Rethinking the
+        conversion trait</a></li>
         </ul>
     </nav>
     
@@ -56,7 +59,7 @@
     <p>The example will be from a <a
     href="https://github.com/FreePlacki/kajet">drawing app</a> that I
     was developing recently. More specifically we’ll be concerned about
-    conversion between the <em>camera</em> and <em>canvas</em>
+    conversion between the <em>screen</em> and <em>canvas</em>
     coordinate systems. The canvas is the space where your drawings
     (lines, images, etc.) live; while the camera defines which part of
     the canvas is visible and can pan and zoom.</p>
@@ -84,13 +87,13 @@
     radius) and rust doesn’t allow function overloading let’s use a
     trait.</p>
     <div class="sourceCode" id="cb5"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> CameraCanvasCoords <span class="op">{</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_camera(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="op">;</span></span>
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> ScreenCanvasCoords <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_screen(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="op">;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_canvas(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="op">;</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> CameraCanvasCoords <span class="cf">for</span> Vector2 <span class="op">{</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_camera(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> ScreenCanvasCoords <span class="cf">for</span> Vector2 <span class="op">{</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_screen(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        (<span class="kw">self</span> <span class="op">-</span> camera<span class="op">.</span>pos) <span class="op">*</span> camera<span class="op">.</span>zoom</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
@@ -99,8 +102,8 @@
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> CameraCanvasCoords <span class="cf">for</span> <span class="dt">f32</span> <span class="op">{</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_camera(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> ScreenCanvasCoords <span class="cf">for</span> <span class="dt">f32</span> <span class="op">{</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_screen(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">self</span> <span class="op">*</span> camera<span class="op">.</span>zoom</span>
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
@@ -110,12 +113,12 @@
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
     <p>Now the api will look like this:</p>
     <div class="sourceCode" id="cb6"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>draw(circle<span class="op">.</span>pos<span class="op">.</span>to_camera(<span class="op">&amp;</span>camera)<span class="op">,</span> circle<span class="op">.</span>r<span class="op">.</span>to_camera(<span class="op">&amp;</span>camera))<span class="op">;</span></span></code></pre></div>
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>draw(circle<span class="op">.</span>pos<span class="op">.</span>to_screen(<span class="op">&amp;</span>camera)<span class="op">,</span> circle<span class="op">.</span>r<span class="op">.</span>to_screen(<span class="op">&amp;</span>camera))<span class="op">;</span></span></code></pre></div>
     <p>Done. This works well and the api seems ergonomic so what’s the
     problem?</p>
     <p>Here are some of them:</p>
     <ol type="1">
-    <li>Forgetting to convert to camera coordinates before calling
+    <li>Forgetting to convert to screen coordinates before calling
     draw.</li>
     <li>Converting something that was aleardy in the correct coordinate
     space.</li>
@@ -128,7 +131,104 @@
     <p>For the low (?) price of a little boilerplate.</p>
     </div>
     <h2 id="the-new-types">The new types</h2>
-    <p>TODO</p>
+    <p>Let’s start with the position. We could create two separate
+    structs like so:</p>
+    <div class="sourceCode" id="cb7"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> ScreenPoint(Vector2)<span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> CanvasPoint(Vector2)<span class="op">;</span></span></code></pre></div>
+    <p>But I like the generic parameter version better
+    (<code>Point&lt;ScreenSpace&gt;</code>,
+    <code>Point&lt;CanvasSpace&gt;</code>). For one we can now do a
+    generic <code>impl</code> block
+    (<code>impl&lt;Space&gt; Point&lt;Space&gt; { ... }</code>) to avoid
+    repeating the same functions. We can also easily make other structs
+    generic over the space if needed (for example
+    <code>Circle&lt;Space&gt;</code> if we need some circles to live in
+    the screen space and other on the canvas).</p>
+    <div class="sourceCode" id="cb8"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> ScreenSpace<span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> CanvasSpace<span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Point<span class="op">&lt;</span>Space<span class="op">&gt;</span>(Vector2)<span class="op">;</span></span></code></pre></div>
+    <p>Aaaand…</p>
+    <div class="sourceCode" id="cb9"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>error[E0392]<span class="op">:</span> <span class="kw">type</span> parameter `Space` is never used</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>help: consider removing `Space`, referring to it in a field,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>or using a marker such as `PhantomData`</span></code></pre></div>
+    <p>It seems that unused generic parameters aren’t allowed. The error
+    helpfully suggests using <code>PhantomData</code> so let’s do just
+    that.</p>
+    <div class="sourceCode" id="cb10"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Point<span class="op">&lt;</span>Space<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    v<span class="op">:</span> Vector2<span class="op">,</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    _marker<span class="op">:</span> PhantomData<span class="op">&lt;</span>Space<span class="op">&gt;,</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <p>This unfortunately means that you have to initialize the marker
+    when creating the struct. We need a <code>new</code> method (we
+    would need one anyway since I want to keep the underlying
+    <code>Vector2</code> private).</p>
+    <div class="sidenote">
+    <p>You’ve been warned about the boilerplate but stick around and
+    you’ll be convinced that it’s worth it.</p>
+    </div>
+    <div class="sourceCode" id="cb11"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>Space<span class="op">&gt;</span> Point<span class="op">&lt;</span>Space<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> <span class="kw">fn</span> new(v<span class="op">:</span> Vector2) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Self</span> <span class="op">{</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>            v<span class="op">,</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>            _marker<span class="op">:</span> PhantomData<span class="op">,</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <p>Let’s also slap some type aliases while we’re at it.</p>
+    <div class="sourceCode" id="cb12"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> ScreenPoint <span class="op">=</span> Point<span class="op">&lt;</span>ScreenSpace<span class="op">&gt;;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> CanvasPoint <span class="op">=</span> Point<span class="op">&lt;</span>CanvasSpace<span class="op">&gt;;</span></span></code></pre></div>
+    <h2 id="rethinking-the-conversion-trait">Rethinking the conversion
+    trait</h2>
+    <p>Recall the trait we defined earlier:</p>
+    <div class="sourceCode" id="cb13"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> ScreenCanvasCoords <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_screen(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="op">;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_canvas(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="op">;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <p>Notice that we no longer want to return <code>Self</code> after
+    the conversion. In fact we want to return the opposite coordinate
+    space from the one we were in. To achieve this we have to split the
+    trait into two and use an associated type like so:</p>
+    <div class="sourceCode" id="cb14"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> ToScreen <span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Output<span class="op">;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_screen(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="pp">::</span>Output<span class="op">;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> ToCanvas <span class="op">{</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Output<span class="op">;</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_canvas(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="pp">::</span>Output<span class="op">;</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <p>Now we simply tell what type we’re returning when implementing
+    the trait.</p>
+    <div class="sourceCode" id="cb15"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> ToScreen <span class="cf">for</span> CanvasPoint <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Output <span class="op">=</span> ScreenPoint<span class="op">;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_screen(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="pp">::</span>Output <span class="op">{</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="pp">ScreenPoint::</span>new((<span class="kw">self</span><span class="op">.</span>v <span class="op">-</span> camera<span class="op">.</span>pos) <span class="op">*</span> camera<span class="op">.</span>zoom)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> ToCanvas <span class="cf">for</span> ScreenPoint <span class="op">{</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Output <span class="op">=</span> CanvasPoint<span class="op">;</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_canvas(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="pp">::</span>Output <span class="op">{</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        <span class="pp">CanvasPoint::</span>new(<span class="kw">self</span><span class="op">.</span>v <span class="op">/</span> camera<span class="op">.</span>zoom <span class="op">+</span> camera<span class="op">.</span>pos)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <p>Let’s stop for a moment and admire the creation. We can now know
+    the coordinate space of any given <code>Point</code> just by
+    checking it’s type, so that’s a lot of mental overhead gone. We’re
+    also unable to accidently call the wrong conversion method (since
+    <code>ScreenPoint</code> doesn’t implement <code>ToScreen</code> and
+    <code>CanvasPoint</code> doesn’t implement
+    <code>ToCanvas</code>).</p>
 </body>
 
 </html>
