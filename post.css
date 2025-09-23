@@ -321,7 +321,8 @@ pre.numberSource {
 
 p:has(> math) {
     overflow: auto;
-    padding-bottom: 1px; /* for the bottom scrollbar */
+    padding-bottom: 1px;
+    /* for the bottom scrollbar */
 }
 
 .sidenote {
@@ -454,5 +455,14 @@ p:has(> math) {
 
     html {
         margin: 2em;
+    }
+
+    html,
+    body {
+        max-width: calc(100vw - 300px - 7em); /* - sidenote width */
+    }
+
+    .sidenote {
+        transform: translateX(calc(100vw - 300px - 5em)) translateY(calc(-100% - 0.5em));
     }
 }
