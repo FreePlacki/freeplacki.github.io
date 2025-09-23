@@ -2,7 +2,7 @@
 set -euo pipefail
 
 INPUT="content.md"
-OUTPUT="content.html"
+OUTPUT="index.html"
 
 EXTRA_ARGS=(
   "--standalone"

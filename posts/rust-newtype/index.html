@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+    <title>On rust’s newtype pattern</title>
+
+    <link rel="stylesheet" href="../../custom-highlight.css" />
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../../post.css" />
+</head>
+
+<body>
+        <nav id="TOC">
+        <h2>On rust’s newtype pattern</h2>
+        <ul>
+        <li><a href="#quick-introduction"
+        id="toc-quick-introduction">Quick introduction</a></li>
+        <li><a href="#the-problem" id="toc-the-problem">The
+        problem</a></li>
+        <li><a href="#the-new-types" id="toc-the-new-types">The new
+        types</a></li>
+        </ul>
+    </nav>
+    
+    <h2 id="quick-introduction">Quick introduction</h2>
+    <p>If you’re already familiar with the pattern please skip to the <a
+    href="#the-problem">next section</a>.</p>
+    <p>The <a
+    href="https://rust-unofficial.github.io/patterns/patterns/behavioural/newtype.html">newtype</a>
+    pattern refers to wrapping a type in a single field <a
+    href="https://doc.rust-lang.org/book/ch05-01-defining-structs.html#using-tuple-structs-without-named-fields-to-create-different-types">tuple
+    struct</a>. For example:</p>
+    <div class="sourceCode" id="cb1"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> UserId(<span class="kw">pub</span> <span class="dt">u64</span>)<span class="op">;</span></span></code></pre></div>
+    <p>Note that this is different than defining a type alias:</p>
+    <div class="sourceCode" id="cb2"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> UserId <span class="op">=</span> <span class="dt">u64</span><span class="op">;</span></span></code></pre></div>
+    <p>Take the following example.</p>
+    <div class="sourceCode" id="cb3"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> UserId(<span class="kw">pub</span> <span class="dt">u64</span>)<span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> OrderId(<span class="kw">pub</span> <span class="dt">u64</span>)<span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> delete_user(id<span class="op">:</span> UserId) <span class="op">{</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <p>Passing a value of type <code>OrderId</code> into this function
+    results in a compile error. If <code>UserId</code> and
+    <code>OrderId</code> were just type aliases for <code>u64</code>
+    passing both would compile but with probably unintended
+    behaviour.</p>
+    <h2 id="the-problem">The problem</h2>
+    <p>The example will be from a <a
+    href="https://github.com/FreePlacki/kajet">drawing app</a> that I
+    was developing recently. More specifically we’ll be concerned about
+    conversion between the <em>camera</em> and <em>canvas</em>
+    coordinate systems. The canvas is the space where your drawings
+    (lines, images, etc.) live; while the camera defines which part of
+    the canvas is visible and can pan and zoom.</p>
+    <p>Say, for example, that a circle has been drawn at
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>100</mn><mo>,</mo><mn>50</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(100, 50)</annotation></semantics></math>
+    with a radius of 5. The camera has been moved to
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>20</mn><mo>,</mo><mn>30</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(20, 30)</annotation></semantics></math>
+    and the user applied a 2x zoom. The circle we should display on the
+    screen should be located at
+    <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>100</mn><mo>−</mo><mn>20</mn><mo>,</mo><mn>50</mn><mo>−</mo><mn>30</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>80</mn><mo>,</mo><mn>20</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">(100 - 20, 50 - 30) = (80, 20)</annotation></semantics></math>
+    with a radius of 10.</p>
+    <p>Let’s get some basic definitions in place.</p>
+    <div class="sourceCode" id="cb4"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Camera <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> pos<span class="op">:</span> Vector2<span class="op">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> zoom<span class="op">:</span> <span class="dt">f32</span><span class="op">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Circle <span class="op">{</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> pos<span class="op">:</span> Vector2<span class="op">,</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> r<span class="op">:</span> <span class="dt">f32</span><span class="op">,</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <p>Since we want to implement the conversion for
+    <code>Vector2</code> and <code>f32</code> types (position and
+    radius) and rust doesn’t allow function overloading let’s use a
+    trait.</p>
+    <div class="sourceCode" id="cb5"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> CameraCanvasCoords <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_camera(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_canvas(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="op">;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> CameraCanvasCoords <span class="cf">for</span> Vector2 <span class="op">{</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_camera(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        (<span class="kw">self</span> <span class="op">-</span> camera<span class="op">.</span>pos) <span class="op">*</span> camera<span class="op">.</span>zoom</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_canvas(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">self</span> <span class="op">/</span> camera<span class="op">.</span>zoom <span class="op">+</span> camera<span class="op">.</span>pos</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> CameraCanvasCoords <span class="cf">for</span> <span class="dt">f32</span> <span class="op">{</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_camera(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">self</span> <span class="op">*</span> camera<span class="op">.</span>zoom</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_canvas(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">self</span> <span class="op">/</span> camera<span class="op">.</span>zoom</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <p>Now the api will look like this:</p>
+    <div class="sourceCode" id="cb6"><pre
+    class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>draw(circle<span class="op">.</span>pos<span class="op">.</span>to_camera(<span class="op">&amp;</span>camera)<span class="op">,</span> circle<span class="op">.</span>r<span class="op">.</span>to_camera(<span class="op">&amp;</span>camera))<span class="op">;</span></span></code></pre></div>
+    <p>Done. This works well and the api seems ergonomic so what’s the
+    problem?</p>
+    <p>Here are some of them:</p>
+    <ol type="1">
+    <li>Forgetting to convert to camera coordinates before calling
+    draw.</li>
+    <li>Converting something that was aleardy in the correct coordinate
+    space.</li>
+    <li>Increasing mental overhead (in which coordinate space is this
+    <code>Vector2</code> that got passed to this function?).</li>
+    </ol>
+    <p>And the problems get worse as the codebase grows.</p>
+    <p>The newtype pattern adresses all of them (and more).</p>
+    <div class="sidenote">
+    <p>For the low (?) price of a little boilerplate.</p>
+    </div>
+    <h2 id="the-new-types">The new types</h2>
+    <p>TODO</p>
+</body>
+
+</html>
