@@ -5,7 +5,6 @@ body {
     max-width: 800px;
     margin: 2em auto;
     scroll-behavior: smooth;
-    font-size: 1.1em;
 }
 
 @media print {
@@ -65,7 +64,7 @@ h6 {
 
 h5,
 h6 {
-    font-size: 1em;
+    font-size: 1rem;
     font-style: italic;
 }
 
@@ -93,7 +92,7 @@ blockquote {
 
 code {
     font-family: 'Cascadia Code', Menlo, Monaco, Consolas, monospace;
-    font-size: 0.9em;
+    font-size: 0.9rem;
     font-variant-ligatures: normal;
     background-color: var(--bg-color-h);
     margin: 0;
@@ -322,7 +321,7 @@ p:has(> math) {
     clear: right;
     width: 300px;
     margin: 0 0 0.5em 0.5em;
-    font-size: 0.9em;
+    font-size: 0.9rem;
     padding: 0em 1em;
     line-height: 1.4;
     background-color: var(--bg-color);
@@ -371,6 +370,12 @@ p:has(> math) {
 }
 
 @media screen and (max-width: 1200px) {
+    html {
+        font-size: 0.9em;
+    }
+}
+
+@media screen and (max-width: 1200px) {
     .sidenote {
         transform: none !important;
         float: none;
@@ -394,10 +399,13 @@ p:has(> math) {
         margin: 0 auto !important;
     }
 
-    html,
+    html {
+        max-width: calc(100% - 32px) !important; /* 32px page padding */
+    }
+
     body {
-        max-width: calc(100% - 2em) !important;
-        font-size: 1em !important;
+        max-width: 100% !important;
+        width: 100%;
     }
 
     h1 {
@@ -456,7 +464,8 @@ p:has(> math) {
 
     html,
     body {
-        max-width: calc(100vw - 300px - 7em); /* - sidenote width */
+        max-width: calc(100vw - 300px - 7em);
+        /* - sidenote width */
     }
 
     .sidenote {
