@@ -5,6 +5,7 @@ html {
     width: 100%;
     margin: 0;
     padding: 0;
+    font-size: 1.1em;
 }
 
 html {
@@ -14,7 +15,8 @@ html {
 :root {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: Crimson, Georgia, serif;
+    /* font-family: Crimson, Georgia, serif; */
+    font-family: "Georgia", "Palatino Linotype", "Palatino", "Times New Roman", "Times", serif;
     line-height: 1.6;
     transition: background-color 0.3s, color 0.3s;
 }
@@ -68,7 +70,7 @@ footer {
     position: relative;
     text-align: center;
     margin-top: 3rem;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
 .main-container {
