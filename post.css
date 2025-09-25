@@ -238,11 +238,6 @@ pre>code.sourceCode>span:empty {
     width: 100%;
 }
 
-code.sourceCode>span {
-    color: inherit;
-    text-decoration: inherit;
-}
-
 div.sourceCode {
     width: 100%;
     border-radius: 0.3em;

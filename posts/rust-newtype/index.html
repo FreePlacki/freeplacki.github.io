@@ -44,19 +44,19 @@
     pattern refers to wrapping a type in a (usually) single field <a
     href="https://doc.rust-lang.org/book/ch05-01-defining-structs.html#using-tuple-structs-without-named-fields-to-create-different-types">tuple
     struct</a>. For example:</p>
-    <div class="sourceCode" id="cb1"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> UserId(<span class="kw">pub</span> <span class="dt">u64</span>)<span class="op">;</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">struct</span> <span class="type">UserId</span><span class="punctuation bracket">(</span><span class="keyword">pub</span> <span class="type builtin">u64</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+</code></pre></div>
     <p>Note that this is different than defining a type alias:</p>
-    <div class="sourceCode" id="cb2"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> UserId <span class="op">=</span> <span class="dt">u64</span><span class="op">;</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">type</span> <span class="type">UserId</span> = <span class="type builtin">u64</span><span class="punctuation delimiter">;</span>
+</code></pre></div>
     <p>Take the following example.</p>
-    <div class="sourceCode" id="cb3"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> UserId(<span class="kw">pub</span> <span class="dt">u64</span>)<span class="op">;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> OrderId(<span class="kw">pub</span> <span class="dt">u64</span>)<span class="op">;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> delete_user(id<span class="op">:</span> UserId) <span class="op">{</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">struct</span> <span class="type">UserId</span><span class="punctuation bracket">(</span><span class="keyword">pub</span> <span class="type builtin">u64</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+<span class="keyword">struct</span> <span class="type">OrderId</span><span class="punctuation bracket">(</span><span class="keyword">pub</span> <span class="type builtin">u64</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+
+<span class="keyword">fn</span> <span class="function">delete_user</span><span class="punctuation bracket">(</span><span class="variable parameter">id</span><span class="punctuation delimiter">:</span> <span class="type">UserId</span><span class="punctuation bracket">)</span> <span class="punctuation bracket">{</span>
+    <span class="comment">// ...</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
     <p>Passing a value of type <code>OrderId</code> into this function
     results in a compile error. If <code>UserId</code> and
     <code>OrderId</code> were just type aliases for <code>u64</code>
@@ -79,48 +79,48 @@
     <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>100</mn><mo>−</mo><mn>20</mn><mo>,</mo><mn>50</mn><mo>−</mo><mn>30</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>80</mn><mo>,</mo><mn>20</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">(100 - 20, 50 - 30) = (80, 20)</annotation></semantics></math>
     with a radius of 10.</p>
     <p>Let’s get some basic definitions in place.</p>
-    <div class="sourceCode" id="cb4"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Camera <span class="op">{</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> pos<span class="op">:</span> Vector2<span class="op">,</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> zoom<span class="op">:</span> <span class="dt">f32</span><span class="op">,</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Circle <span class="op">{</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> pos<span class="op">:</span> Vector2<span class="op">,</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> r<span class="op">:</span> <span class="dt">f32</span><span class="op">,</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">struct</span> <span class="type">Camera</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">pub</span> <span class="property">pos</span><span class="punctuation delimiter">:</span> <span class="type">Vector2</span><span class="punctuation delimiter">,</span>
+    <span class="keyword">pub</span> <span class="property">zoom</span><span class="punctuation delimiter">:</span> <span class="type builtin">f32</span><span class="punctuation delimiter">,</span>
+<span class="punctuation bracket">}</span>
+
+<span class="keyword">struct</span> <span class="type">Circle</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">pub</span> <span class="property">pos</span><span class="punctuation delimiter">:</span> <span class="type">Vector2</span><span class="punctuation delimiter">,</span>
+    <span class="keyword">pub</span> <span class="property">r</span><span class="punctuation delimiter">:</span> <span class="type builtin">f32</span><span class="punctuation delimiter">,</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
     <p>Since we want to implement the conversion for
     <code>Vector2</code> and <code>f32</code> types (position and
     radius) and rust doesn’t allow function overloading let’s use a
     trait.</p>
-    <div class="sourceCode" id="cb5"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> ScreenCanvasCoords <span class="op">{</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_screen(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="op">;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_canvas(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="op">;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> ScreenCanvasCoords <span class="cf">for</span> Vector2 <span class="op">{</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_screen(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        (<span class="kw">self</span> <span class="op">-</span> camera<span class="op">.</span>pos) <span class="op">*</span> camera<span class="op">.</span>zoom</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_canvas(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">self</span> <span class="op">/</span> camera<span class="op">.</span>zoom <span class="op">+</span> camera<span class="op">.</span>pos</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> ScreenCanvasCoords <span class="cf">for</span> <span class="dt">f32</span> <span class="op">{</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_screen(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">self</span> <span class="op">*</span> camera<span class="op">.</span>zoom</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_canvas(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">self</span> <span class="op">/</span> camera<span class="op">.</span>zoom</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">trait</span> <span class="type">ScreenCanvasCoords</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">fn</span> <span class="function">to_screen</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">camera</span><span class="punctuation delimiter">:</span> <span class="operator">&amp;</span><span class="type">Camera</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span><span class="punctuation delimiter">;</span>
+    <span class="keyword">fn</span> <span class="function">to_canvas</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">camera</span><span class="punctuation delimiter">:</span> <span class="operator">&amp;</span><span class="type">Camera</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span><span class="punctuation delimiter">;</span>
+<span class="punctuation bracket">}</span>
+
+<span class="keyword">impl</span> <span class="type">ScreenCanvasCoords</span> <span class="keyword">for</span> <span class="type">Vector2</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">fn</span> <span class="function">to_screen</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">camera</span><span class="punctuation delimiter">:</span> <span class="operator">&amp;</span><span class="type">Camera</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span> <span class="punctuation bracket">{</span>
+        <span class="punctuation bracket">(</span><span class="variable builtin">self</span> - camera<span class="punctuation delimiter">.</span><span class="property">pos</span><span class="punctuation bracket">)</span> <span class="operator">*</span> camera<span class="punctuation delimiter">.</span><span class="property">zoom</span>
+    <span class="punctuation bracket">}</span>
+
+    <span class="keyword">fn</span> <span class="function">to_canvas</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">camera</span><span class="punctuation delimiter">:</span> <span class="operator">&amp;</span><span class="type">Camera</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span> <span class="punctuation bracket">{</span>
+        <span class="variable builtin">self</span> / camera<span class="punctuation delimiter">.</span><span class="property">zoom</span> + camera<span class="punctuation delimiter">.</span><span class="property">pos</span>
+    <span class="punctuation bracket">}</span>
+<span class="punctuation bracket">}</span>
+
+<span class="keyword">impl</span> <span class="type">ScreenCanvasCoords</span> <span class="keyword">for</span> <span class="type builtin">f32</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">fn</span> <span class="function">to_screen</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">camera</span><span class="punctuation delimiter">:</span> <span class="operator">&amp;</span><span class="type">Camera</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span> <span class="punctuation bracket">{</span>
+        <span class="variable builtin">self</span> <span class="operator">*</span> camera<span class="punctuation delimiter">.</span><span class="property">zoom</span>
+    <span class="punctuation bracket">}</span>
+
+    <span class="keyword">fn</span> <span class="function">to_canvas</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">camera</span><span class="punctuation delimiter">:</span> <span class="operator">&amp;</span><span class="type">Camera</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span> <span class="punctuation bracket">{</span>
+        <span class="variable builtin">self</span> / camera<span class="punctuation delimiter">.</span><span class="property">zoom</span>
+    <span class="punctuation bracket">}</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
     <p>Now the api will look like this:</p>
-    <div class="sourceCode" id="cb6"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>draw(circle<span class="op">.</span>pos<span class="op">.</span>to_screen(<span class="op">&amp;</span>camera)<span class="op">,</span> circle<span class="op">.</span>r<span class="op">.</span>to_screen(<span class="op">&amp;</span>camera))<span class="op">;</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="function">draw</span><span class="punctuation bracket">(</span>circle<span class="punctuation delimiter">.</span><span class="property">pos</span><span class="punctuation delimiter">.</span><span class="function method">to_screen</span><span class="punctuation bracket">(</span><span class="operator">&amp;</span>camera<span class="punctuation bracket">)</span><span class="punctuation delimiter">,</span> circle<span class="punctuation delimiter">.</span><span class="property">r</span><span class="punctuation delimiter">.</span><span class="function method">to_screen</span><span class="punctuation bracket">(</span><span class="operator">&amp;</span>camera<span class="punctuation bracket">)</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+</code></pre></div>
     <p>Done. This works well and the api seems ergonomic so what’s the
     problem?</p>
     <p>Here are some of them:</p>
@@ -140,9 +140,9 @@
     <h2 id="the-new-types">The new types</h2>
     <p>Let’s start with the position. We could create two separate
     structs like so:</p>
-    <div class="sourceCode" id="cb7"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> ScreenPoint(Vector2)<span class="op">;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> CanvasPoint(Vector2)<span class="op">;</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">struct</span> <span class="type">ScreenPoint</span><span class="punctuation bracket">(</span><span class="type">Vector2</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+<span class="keyword">struct</span> <span class="type">CanvasPoint</span><span class="punctuation bracket">(</span><span class="type">Vector2</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+</code></pre></div>
     <p>But I like the generic parameter version better
     (<code>Point&lt;ScreenSpace&gt;</code>,
     <code>Point&lt;CanvasSpace&gt;</code>). For one we can now do a
@@ -156,24 +156,24 @@
     <p>The name <code>Space</code> here refers to the <em>coordinate
     space</em> if that wasn’t clear. I’ll be using it a lot.</p>
     </div>
-    <div class="sourceCode" id="cb8"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> ScreenSpace<span class="op">;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> CanvasSpace<span class="op">;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Point<span class="op">&lt;</span>Space<span class="op">&gt;</span>(Vector2)<span class="op">;</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">struct</span> <span class="type">ScreenSpace</span><span class="punctuation delimiter">;</span>
+<span class="keyword">struct</span> <span class="type">CanvasSpace</span><span class="punctuation delimiter">;</span>
+
+<span class="keyword">struct</span> <span class="type">Point</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span><span class="punctuation bracket">(</span><span class="type">Vector2</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+</code></pre></div>
     <p>Aaaand…</p>
-    <div class="sourceCode" id="cb9"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>error[E0392]<span class="op">:</span> <span class="kw">type</span> parameter `Space` is never used</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>help: consider removing `Space`, referring to it in a field,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>or using a marker such as `PhantomData`</span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust">error<span class="punctuation bracket">[</span><span class="constructor">E0392</span><span class="punctuation bracket">]</span><span class="punctuation delimiter">:</span> <span class="keyword">type</span> parameter `<span class="constructor">Space</span>` is never used
+help<span class="punctuation delimiter">:</span> consider removing `<span class="constructor">Space</span>`<span class="punctuation delimiter">,</span> referring to it in a field<span class="punctuation delimiter">,</span>
+or using a marker such as `<span class="type">PhantomData</span>`
+</code></pre></div>
     <p>It seems that unused generic parameters aren’t allowed. The error
     helpfully suggests using <code>PhantomData</code> so let’s do just
     that.</p>
-    <div class="sourceCode" id="cb10"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Point<span class="op">&lt;</span>Space<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    v<span class="op">:</span> Vector2<span class="op">,</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    _marker<span class="op">:</span> PhantomData<span class="op">&lt;</span>Space<span class="op">&gt;,</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">struct</span> <span class="type">Point</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span> <span class="punctuation bracket">{</span>
+    <span class="property">v</span><span class="punctuation delimiter">:</span> <span class="type">Vector2</span><span class="punctuation delimiter">,</span>
+    <span class="property">_marker</span><span class="punctuation delimiter">:</span> <span class="type">PhantomData</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span><span class="punctuation delimiter">,</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
     <p>This unfortunately means that you have to initialize the marker
     when creating the struct. We need a <code>new</code> method (we
     would need one anyway since I want to keep the underlying
@@ -182,57 +182,57 @@
     <p>You’ve been warned about the boilerplate but stick around and
     you’ll be convinced that it’s worth it.</p>
     </div>
-    <div class="sourceCode" id="cb11"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>Space<span class="op">&gt;</span> Point<span class="op">&lt;</span>Space<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> <span class="kw">fn</span> new(v<span class="op">:</span> Vector2) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Self</span> <span class="op">{</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>            v<span class="op">,</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>            _marker<span class="op">:</span> PhantomData<span class="op">,</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">impl</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span> <span class="type">Point</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="function">new</span><span class="punctuation bracket">(</span><span class="variable parameter">v</span><span class="punctuation delimiter">:</span> <span class="type">Vector2</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span> <span class="punctuation bracket">{</span>
+        <span class="type">Self</span> <span class="punctuation bracket">{</span>
+            v<span class="punctuation delimiter">,</span>
+            <span class="property">_marker</span><span class="punctuation delimiter">:</span> <span class="constructor">PhantomData</span><span class="punctuation delimiter">,</span>
+        <span class="punctuation bracket">}</span>
+    <span class="punctuation bracket">}</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
     <p>Let’s also slap some type aliases while we’re at it.</p>
-    <div class="sourceCode" id="cb12"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> ScreenPoint <span class="op">=</span> Point<span class="op">&lt;</span>ScreenSpace<span class="op">&gt;;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> CanvasPoint <span class="op">=</span> Point<span class="op">&lt;</span>CanvasSpace<span class="op">&gt;;</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">type</span> <span class="type">ScreenPoint</span> = <span class="type">Point</span><span class="punctuation bracket">&lt;</span><span class="type">ScreenSpace</span><span class="punctuation bracket">&gt;</span><span class="punctuation delimiter">;</span>
+<span class="keyword">type</span> <span class="type">CanvasPoint</span> = <span class="type">Point</span><span class="punctuation bracket">&lt;</span><span class="type">CanvasSpace</span><span class="punctuation bracket">&gt;</span><span class="punctuation delimiter">;</span>
+</code></pre></div>
     <h2 id="rethinking-the-conversion-trait">Rethinking the conversion
     trait</h2>
     <p>Recall the trait we defined earlier:</p>
-    <div class="sourceCode" id="cb13"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> ScreenCanvasCoords <span class="op">{</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_screen(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="op">;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_canvas(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="op">;</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">trait</span> <span class="type">ScreenCanvasCoords</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">fn</span> <span class="function">to_screen</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">camera</span><span class="punctuation delimiter">:</span> <span class="operator">&amp;</span><span class="type">Camera</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span><span class="punctuation delimiter">;</span>
+    <span class="keyword">fn</span> <span class="function">to_canvas</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">camera</span><span class="punctuation delimiter">:</span> <span class="operator">&amp;</span><span class="type">Camera</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span><span class="punctuation delimiter">;</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
     <p>Notice that we no longer want to return <code>Self</code> after
     the conversion. In fact we want to return the opposite coordinate
     space from the one we were in. To achieve this we have to split the
     trait into two and use an associated type like so:</p>
-    <div class="sourceCode" id="cb14"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> ToScreen <span class="op">{</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Output<span class="op">;</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_screen(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="pp">::</span>Output<span class="op">;</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> ToCanvas <span class="op">{</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Output<span class="op">;</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_canvas(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="pp">::</span>Output<span class="op">;</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">trait</span> <span class="type">ToScreen</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">type</span> <span class="type">Output</span><span class="punctuation delimiter">;</span>
+    <span class="keyword">fn</span> <span class="function">to_screen</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">camera</span><span class="punctuation delimiter">:</span> <span class="operator">&amp;</span><span class="type">Camera</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span><span class="punctuation delimiter">::</span><span class="type">Output</span><span class="punctuation delimiter">;</span>
+<span class="punctuation bracket">}</span>
+
+<span class="keyword">trait</span> <span class="type">ToCanvas</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">type</span> <span class="type">Output</span><span class="punctuation delimiter">;</span>
+    <span class="keyword">fn</span> <span class="function">to_canvas</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">camera</span><span class="punctuation delimiter">:</span> <span class="operator">&amp;</span><span class="type">Camera</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span><span class="punctuation delimiter">::</span><span class="type">Output</span><span class="punctuation delimiter">;</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
     <p>Now we simply tell what type we’re returning when implementing
     the trait.</p>
-    <div class="sourceCode" id="cb15"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> ToScreen <span class="cf">for</span> CanvasPoint <span class="op">{</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Output <span class="op">=</span> ScreenPoint<span class="op">;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_screen(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="pp">::</span>Output <span class="op">{</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="pp">ScreenPoint::</span>new((<span class="kw">self</span><span class="op">.</span>v <span class="op">-</span> camera<span class="op">.</span>pos) <span class="op">*</span> camera<span class="op">.</span>zoom)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> ToCanvas <span class="cf">for</span> ScreenPoint <span class="op">{</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Output <span class="op">=</span> CanvasPoint<span class="op">;</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> to_canvas(<span class="kw">self</span><span class="op">,</span> camera<span class="op">:</span> <span class="op">&amp;</span>Camera) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="pp">::</span>Output <span class="op">{</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        <span class="pp">CanvasPoint::</span>new(<span class="kw">self</span><span class="op">.</span>v <span class="op">/</span> camera<span class="op">.</span>zoom <span class="op">+</span> camera<span class="op">.</span>pos)</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">impl</span> <span class="type">ToScreen</span> <span class="keyword">for</span> <span class="type">CanvasPoint</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">type</span> <span class="type">Output</span> = <span class="type">ScreenPoint</span><span class="punctuation delimiter">;</span>
+    <span class="keyword">fn</span> <span class="function">to_screen</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">camera</span><span class="punctuation delimiter">:</span> <span class="operator">&amp;</span><span class="type">Camera</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span><span class="punctuation delimiter">::</span><span class="type">Output</span> <span class="punctuation bracket">{</span>
+        <span class="type">ScreenPoint</span><span class="punctuation delimiter">::</span><span class="function">new</span><span class="punctuation bracket">(</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">.</span><span class="property">v</span> - camera<span class="punctuation delimiter">.</span><span class="property">pos</span><span class="punctuation bracket">)</span> <span class="operator">*</span> camera<span class="punctuation delimiter">.</span><span class="property">zoom</span><span class="punctuation bracket">)</span>
+    <span class="punctuation bracket">}</span>
+<span class="punctuation bracket">}</span>
+
+<span class="keyword">impl</span> <span class="type">ToCanvas</span> <span class="keyword">for</span> <span class="type">ScreenPoint</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">type</span> <span class="type">Output</span> = <span class="type">CanvasPoint</span><span class="punctuation delimiter">;</span>
+    <span class="keyword">fn</span> <span class="function">to_canvas</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">camera</span><span class="punctuation delimiter">:</span> <span class="operator">&amp;</span><span class="type">Camera</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span><span class="punctuation delimiter">::</span><span class="type">Output</span> <span class="punctuation bracket">{</span>
+        <span class="type">CanvasPoint</span><span class="punctuation delimiter">::</span><span class="function">new</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">.</span><span class="property">v</span> / camera<span class="punctuation delimiter">.</span><span class="property">zoom</span> + camera<span class="punctuation delimiter">.</span><span class="property">pos</span><span class="punctuation bracket">)</span>
+    <span class="punctuation bracket">}</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
     <p>Let’s stop for a moment and admire the creation. We can now know
     the coordinate space of any given <code>Point</code> just by
     checking its type, so that’s a lot of mental overhead gone.</p>
@@ -272,12 +272,12 @@
     <p>Since it only makes sense to draw something that is in the
     <em>screen</em> coordinate space, we’ll only implement the
     conversion method for the <code>ScreenPoint</code> type.</p>
-    <div class="sourceCode" id="cb16"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> <span class="bu">From</span><span class="op">&lt;</span>ScreenPoint<span class="op">&gt;</span> <span class="cf">for</span> Vector2 <span class="op">{</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> from(value<span class="op">:</span> ScreenPoint) <span class="op">-&gt;</span> <span class="dt">Self</span> <span class="op">{</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        value<span class="op">.</span>v</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">impl</span> <span class="type">From</span><span class="punctuation bracket">&lt;</span><span class="type">ScreenPoint</span><span class="punctuation bracket">&gt;</span> <span class="keyword">for</span> <span class="type">Vector2</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">fn</span> <span class="function">from</span><span class="punctuation bracket">(</span><span class="variable parameter">value</span><span class="punctuation delimiter">:</span> <span class="type">ScreenPoint</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span> <span class="punctuation bracket">{</span>
+        value<span class="punctuation delimiter">.</span><span class="property">v</span>
+    <span class="punctuation bracket">}</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
     <div class="sidenote">
     <p>Implementing <code>From</code> gives you the corresponding
     <code>Into</code> for free so you should pretty much always
@@ -287,8 +287,8 @@
     that simple</a>).</p>
     </div>
     <p>Bring up the <code>draw</code> call again.</p>
-    <div class="sourceCode" id="cb17"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>draw(circle<span class="op">.</span>pos<span class="op">.</span>to_screen(<span class="op">&amp;</span>camera)<span class="op">.</span>into()<span class="op">,</span> circle<span class="op">.</span>r<span class="op">.</span>to_screen(<span class="op">&amp;</span>camera))<span class="op">;</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="function">draw</span><span class="punctuation bracket">(</span>circle<span class="punctuation delimiter">.</span><span class="property">pos</span><span class="punctuation delimiter">.</span><span class="function method">to_screen</span><span class="punctuation bracket">(</span><span class="operator">&amp;</span>camera<span class="punctuation bracket">)</span><span class="punctuation delimiter">.</span><span class="function method">into</span><span class="punctuation bracket">(</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">,</span> circle<span class="punctuation delimiter">.</span><span class="property">r</span><span class="punctuation delimiter">.</span><span class="function method">to_screen</span><span class="punctuation bracket">(</span><span class="operator">&amp;</span>camera<span class="punctuation bracket">)</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+</code></pre></div>
     <p>Now we can interact with our drawing lib and are unable to pass a
     position in an incorrect coordinate space!</p>
     <h2 id="more-types">More types!</h2>
@@ -301,43 +301,43 @@
     <p>Let’s introduce a new type for the <code>Circle</code>’s radius,
     which is still just an innocent little <code>f32</code> (I won’t be
     showing the details anymore).</p>
-    <div class="sourceCode" id="cb18"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Length<span class="op">&lt;</span>Space<span class="op">&gt;</span> <span class="op">{</span> <span class="co">/* ... */</span> <span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">struct</span> <span class="type">Length</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span> <span class="punctuation bracket">{</span> <span class="comment">/* ... */</span> <span class="punctuation bracket">}</span>
+</code></pre></div>
     <p>And the conversion is just multiplying/dividing by
     <code>camera.zoom</code>.</p>
     <p>What’s nice is that now we can expose <code>Point</code>’s fields
     without compromising the <em>type safety</em>.</p>
-    <div class="sourceCode" id="cb19"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>Space<span class="op">&gt;</span> Point<span class="op">&lt;</span>Space<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> x(<span class="op">&amp;</span><span class="kw">self</span>) <span class="op">-&gt;</span> Length<span class="op">&lt;</span>Space<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        <span class="pp">Length::</span>new(<span class="kw">self</span><span class="op">.</span>v<span class="op">.</span>x)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> y(<span class="op">&amp;</span><span class="kw">self</span>) <span class="op">-&gt;</span> Length<span class="op">&lt;</span>Space<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="pp">Length::</span>new(<span class="kw">self</span><span class="op">.</span>v<span class="op">.</span>y)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">impl</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span> <span class="type">Point</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">fn</span> <span class="function">x</span><span class="punctuation bracket">(</span><span class="operator">&amp;</span><span class="variable builtin">self</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Length</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span> <span class="punctuation bracket">{</span>
+        <span class="type">Length</span><span class="punctuation delimiter">::</span><span class="function">new</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">.</span><span class="property">v</span><span class="punctuation delimiter">.</span><span class="property">x</span><span class="punctuation bracket">)</span>
+    <span class="punctuation bracket">}</span>
+
+    <span class="keyword">fn</span> <span class="function">y</span><span class="punctuation bracket">(</span><span class="operator">&amp;</span><span class="variable builtin">self</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Length</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span> <span class="punctuation bracket">{</span>
+        <span class="type">Length</span><span class="punctuation delimiter">::</span><span class="function">new</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">.</span><span class="property">v</span><span class="punctuation delimiter">.</span><span class="property">y</span><span class="punctuation bracket">)</span>
+    <span class="punctuation bracket">}</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
     <p>Neat! But this is only useful if we’re actually able to
     <em>do</em> something with them, like, say, perform arithmetic.</p>
     <p>We can use the same <em>impl generic over <code>Space</code></em>
     technique to ensure we don’t accidentally add a
     <code>ScreenLength</code> to a <code>CanvasLength</code>.</p>
-    <div class="sourceCode" id="cb20"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>Space<span class="op">&gt;</span> <span class="pp">ops::</span><span class="bu">Add</span><span class="op">&lt;</span>Length<span class="op">&lt;</span>Space<span class="op">&gt;&gt;</span> <span class="cf">for</span> Length<span class="op">&lt;</span>Space<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Output <span class="op">=</span> <span class="dt">Self</span><span class="op">;</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> add(<span class="kw">self</span><span class="op">,</span> rhs<span class="op">:</span> Length<span class="op">&lt;</span>Space<span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="pp">::</span>Output <span class="op">{</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Self</span><span class="pp">::</span>new(<span class="kw">self</span><span class="op">.</span>v <span class="op">+</span> rhs<span class="op">.</span>v)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">impl</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span> ops<span class="punctuation delimiter">::</span><span class="type">Add</span><span class="punctuation bracket">&lt;</span><span class="type">Length</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span><span class="punctuation bracket">&gt;</span> <span class="keyword">for</span> <span class="type">Length</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">type</span> <span class="type">Output</span> = <span class="type">Self</span><span class="punctuation delimiter">;</span>
+    <span class="keyword">fn</span> <span class="function">add</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">rhs</span><span class="punctuation delimiter">:</span> <span class="type">Length</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span><span class="punctuation bracket">)</span> -&gt; <span class="type">Self</span><span class="punctuation delimiter">::</span><span class="type">Output</span> <span class="punctuation bracket">{</span>
+        <span class="type">Self</span><span class="punctuation delimiter">::</span><span class="function">new</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation delimiter">.</span><span class="property">v</span> + rhs<span class="punctuation delimiter">.</span><span class="property">v</span><span class="punctuation bracket">)</span>
+    <span class="punctuation bracket">}</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
     <p>The arithmetic operators’ implementations get more interesting if
     we add more types, so let’s do just that.</p>
     <p>Consider the panning functionality of our drawing app.</p>
-    <div class="sourceCode" id="cb21"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> Camera <span class="op">{</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> <span class="kw">fn</span> update_pos(<span class="op">&amp;</span><span class="kw">mut</span> <span class="kw">self</span><span class="op">,</span> mouse_delta<span class="op">:</span> ScreenPoint) <span class="op">{</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">self</span><span class="op">.</span>pos <span class="op">-=</span> mouse_delta<span class="op">.</span>to_canvas(<span class="kw">self</span>)<span class="op">;</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">impl</span> <span class="type">Camera</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="function">update_pos</span><span class="punctuation bracket">(</span><span class="operator">&amp;</span><span class="keyword">mut</span> <span class="variable builtin">self</span><span class="punctuation delimiter">,</span> <span class="variable parameter">mouse_delta</span><span class="punctuation delimiter">:</span> <span class="type">ScreenPoint</span><span class="punctuation bracket">)</span> <span class="punctuation bracket">{</span>
+        <span class="variable builtin">self</span><span class="punctuation delimiter">.</span><span class="property">pos</span> -= mouse_delta<span class="punctuation delimiter">.</span><span class="function method">to_canvas</span><span class="punctuation bracket">(</span><span class="variable builtin">self</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+    <span class="punctuation bracket">}</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
     <p>The <code>camera.pos</code> was in <code>CanvasSpace</code> and
     the mouse movement happened in the <code>ScreenSpace</code>. Our
     types saved us from forgetting to convert the
@@ -354,8 +354,8 @@
     coordinate space is this <code>Vector2</code>?” but also “does this
     <code>Vector2</code> represent a position or a displacement?”.</p>
     </div>
-    <div class="sourceCode" id="cb22"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Vector<span class="op">&lt;</span>Space<span class="op">&gt;</span> <span class="op">{</span> <span class="co">/* ... */</span> <span class="op">}</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">struct</span> <span class="type">Vector</span><span class="punctuation bracket">&lt;</span><span class="type">Space</span><span class="punctuation bracket">&gt;</span> <span class="punctuation bracket">{</span> <span class="comment">/* ... */</span> <span class="punctuation bracket">}</span>
+</code></pre></div>
     <p>With conversions being just multiplying/dividing both components
     of the <code>Vector2</code> by <code>camera.zoom</code>. Thinking
     about implementing arithmetic operators – the result of subtracting
@@ -369,10 +369,10 @@
     <code>f32</code> (yuck). Make it a <code>Length</code>? But in which
     coordinate space? Doesn’t fit in what we got so let’s cook up a new
     type.</p>
-    <div class="sourceCode" id="cb23"><pre
-    class="sourceCode rust"><code class="sourceCode rust"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Scale<span class="op">&lt;</span>FromSpace<span class="op">,</span> ToSpace<span class="op">&gt;</span> <span class="op">{</span> <span class="co">/* ... */</span> <span class="op">}</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> CanvasToScreenScale <span class="op">=</span> Scale<span class="op">&lt;</span>CanvasSpace<span class="op">,</span> ScreenSpace<span class="op">&gt;;</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">struct</span> <span class="type">Scale</span><span class="punctuation bracket">&lt;</span><span class="type">FromSpace</span><span class="punctuation delimiter">,</span> <span class="type">ToSpace</span><span class="punctuation bracket">&gt;</span> <span class="punctuation bracket">{</span> <span class="comment">/* ... */</span> <span class="punctuation bracket">}</span>
+
+<span class="keyword">type</span> <span class="type">CanvasToScreenScale</span> = <span class="type">Scale</span><span class="punctuation bracket">&lt;</span><span class="type">CanvasSpace</span><span class="punctuation delimiter">,</span> <span class="type">ScreenSpace</span><span class="punctuation bracket">&gt;</span><span class="punctuation delimiter">;</span>
+</code></pre></div>
     <div class="sidenote">
     <p>That’s a long name for a type, but I think it describes it
     well.</p>

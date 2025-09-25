@@ -6,17 +6,22 @@ OUTPUT="index.html"
 
 EXTRA_ARGS=(
   "--standalone"
+  "--no-highlight"
   "--mathml"
   "--template=../template.html"
   "--toc"
   "--toc-depth=2" # include only h2 for the table of contents
 )
 
-echo "Building '${OUTPUT}'..."
+echo "Building '$OUTPUT'..."
 
-pandoc "${INPUT}" \
+pandoc "$INPUT" \
   "${EXTRA_ARGS[@]}" \
-  -o "${OUTPUT}"
+  -o "$OUTPUT" \
+&& \
+../htmlhl $OUTPUT > "$OUTPUT.tmp" \
+&& \
+mv "$OUTPUT.tmp" $OUTPUT
 
-echo "Done. Output written to ${OUTPUT}"
+echo "Done. Output written to $OUTPUT"
 
