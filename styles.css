@@ -19,7 +19,7 @@ html {
 }
 
 :root {
-    background-color: var(--bg-color);
+    background-color: var(--bg-color-h);
     color: var(--text-color);
     font-family: "Georgia", "Palatino Linotype", "Palatino", "Times New Roman", "Times", serif;
     line-height: 1.6;

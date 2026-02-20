@@ -96,7 +96,7 @@ code {
     font-family: 'Cascadia Code', Menlo, Monaco, Consolas, monospace;
     font-size: 0.9rem;
     font-variant-ligatures: normal;
-    background-color: var(--bg-color-h);
+    background-color: var(--bg-color);
     margin: 0;
     hyphens: manual;
     padding: 0.2em;
@@ -116,7 +116,7 @@ pre code {
 }
 
 .sourceCode {
-    background-color: var(--bg-color-h);
+    background-color: var(--bg-color);
     overflow: visible;
 }
 
@@ -321,7 +321,7 @@ p:has(> math) {
     font-size: 0.9rem;
     padding: 0em 1em;
     line-height: 1.4;
-    background-color: var(--bg-color);
+    background-color: var(--bg-color-h);
     position: absolute;
     color: var(--text-color);
     transform: translateX(calc(800px + 1em)) translateY(calc(-100% - 0.5em));

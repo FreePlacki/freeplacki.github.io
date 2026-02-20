@@ -280,7 +280,7 @@ pretty much always implement `From` instead of `Into` (though it's
 Bring up the `draw` call again.
 
 ```rust
-draw(circle.pos.to_screen(&camera).into(), circle.r.to_screen(&camera));
+draw(circle.pos.to_screen(&camera).into(), circle.r.to_screen(&camera).into());
 ```
 
 Now we can interact with our drawing lib and are unable to pass a position in
