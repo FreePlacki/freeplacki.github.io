@@ -1,5 +1,5 @@
 ---
-title: On rust's newtype pattern
+title: On Rust's newtype pattern
 ---
 
 ## Quick introduction

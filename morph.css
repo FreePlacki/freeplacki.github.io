@@ -1,0 +1,89 @@
+/* Used for morphing the letters from one word to another (provider -> riverpod) */
+
+:root{
+  --cols: 8;
+  --cell: 1ch;
+  --gap: 0.02ch;
+  --w: calc(var(--cols) * (var(--cell) + var(--gap)) + 0.7em);
+  --dur: 0.7s;
+  --ease: ease-in-out;
+}
+
+.morph{
+  display:inline-block;
+  width:var(--w);
+  height:1.2em;
+  position:relative;
+  cursor:pointer;
+  user-select:none;
+}
+
+.morph p {
+    transform: translateY(0.25em);
+    margin: 0;
+}
+
+/* each letter is one absolutely positioned span */
+.morph .char{
+  position:absolute;
+  top:0;
+  width:var(--cell);
+  text-align:center;
+  line-height:1.2;
+  font-weight:600;
+  transition: transform var(--dur) var(--ease), color var(--dur) var(--ease);
+  backface-visibility:hidden;
+}
+
+/* helper: column x -> left position */
+.morph .col0{ left: calc(0 * (var(--cell) + var(--gap))); }
+.morph .col1{ left: calc(1 * (var(--cell) + var(--gap))); }
+.morph .col2{ left: calc(2 * (var(--cell) + var(--gap))); }
+.morph .col3{ left: calc(3 * (var(--cell) + var(--gap))); }
+.morph .col4{ left: calc(4 * (var(--cell) + var(--gap))); }
+.morph .col5{ left: calc(5 * (var(--cell) + var(--gap))); }
+.morph .col6{ left: calc(6 * (var(--cell) + var(--gap))); }
+.morph .col7{ left: calc(7 * (var(--cell) + var(--gap))); }
+
+/* initial layout = "provider" — place each source letter in its source column */
+.morph[data-state="source"] .c0{ transform: translateX(0); } /* p (col0) */
+.morph[data-state="source"] .c1{ transform: translateX(0); } /* r (col1) */
+.morph[data-state="source"] .c2{ transform: translateX(0); } /* o (col2) */
+.morph[data-state="source"] .c3{ transform: translateX(0); } /* v (col3) */
+.morph[data-state="source"] .c4{ transform: translateX(0); } /* i (col4) */
+.morph[data-state="source"] .c5{ transform: translateX(0); } /* d (col5) */
+.morph[data-state="source"] .c6{ transform: translateX(0); } /* e (col6) */
+.morph[data-state="source"] .c7{ transform: translateX(0); } /* r (col7) */
+
+/* hover: switch to target arrangement */
+.morph:hover[data-state="source"] .c0{ /* source p in col0 -> target at col5 (p) */
+  transform: translateX(calc((5 - 0) * (var(--cell) + var(--gap))));
+}
+.morph:hover[data-state="source"] .c1{ /* source r (col1) -> target col0 (r) */
+  transform: translateX(calc((0 - 1) * (var(--cell) + var(--gap))));
+}
+.morph:hover[data-state="source"] .c2{ /* source o (col2) -> target col6 (o) */
+  transform: translateX(calc((6 - 2) * (var(--cell) + var(--gap))));
+}
+.morph:hover[data-state="source"] .c3{ /* source v (col3) -> target col2 (v) */
+  transform: translateX(calc((2 - 3) * (var(--cell) + var(--gap))));
+}
+.morph:hover[data-state="source"] .c4{ /* source i (col4) -> target col1 (i) */
+  transform: translateX(calc((1 - 4) * (var(--cell) + var(--gap))));
+}
+.morph:hover[data-state="source"] .c5{ /* source d (col5) -> target col7 (d) */
+  transform: translateX(calc((7 - 5) * (var(--cell) + var(--gap))));
+}
+.morph:hover[data-state="source"] .c6{ /* source e (col6) -> target col3 (e) */
+  transform: translateX(calc((3 - 6) * (var(--cell) + var(--gap))));
+}
+.morph:hover[data-state="source"] .c7{ /* source r (col7) -> target col4 (r) */
+  transform: translateX(calc((4 - 7) * (var(--cell) + var(--gap))));
+}
+
+.morph:hover .char{
+    color: var(--blue);
+    transition: transform var(--dur) var(--ease), color var(--dur) var(--ease);
+    transform: translateX(0) translateY(0);
+}
+
