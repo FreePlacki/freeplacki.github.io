@@ -18,6 +18,8 @@
         <h2>Riverpod from scratch</h2>
         <ul>
         <li><a href="#riverpod" id="toc-riverpod">Riverpod</a></li>
+        <li><a href="#a-memoized-function"
+        id="toc-a-memoized-function">A Memoized Function</a></li>
         </ul>
     </nav>
     
@@ -41,6 +43,63 @@
     class="char col7 c7">r</span></p>
     </div>
     </div>
+    <p>Just take this example:</p>
+    <div class="sourceCode"><pre class="dart sourceCode"><code class="sourceCode dart"><span class="keyword">final</span> <span class="variable">apiClientProvider</span> <span class="operator">=</span> <span class="type">Provider</span><span class="punctuation bracket">(</span><span class="punctuation bracket">(</span><span class="variable">ref</span><span class="punctuation bracket">)</span> <span class="operator">=&gt;</span> <span class="type">ApiClient</span><span class="punctuation bracket">(</span><span class="punctuation bracket">)</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+
+<span class="keyword">final</span> <span class="variable">counterProvider</span> <span class="operator">=</span> <span class="type">StateProvider</span><span class="operator">&lt;</span><span class="variable">int</span><span class="operator">&gt;</span><span class="punctuation bracket">(</span><span class="punctuation bracket">(</span><span class="variable">ref</span><span class="punctuation bracket">)</span> <span class="operator">=&gt;</span> <span class="number">0</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+
+<span class="keyword">final</span> <span class="variable">repositoryProvider</span> <span class="operator">=</span> <span class="type">Provider</span><span class="punctuation bracket">(</span><span class="punctuation bracket">(</span><span class="variable">ref</span><span class="punctuation bracket">)</span> <span class="punctuation bracket">{</span>
+  <span class="keyword">final</span> <span class="variable">api</span> <span class="operator">=</span> <span class="variable">ref</span><span class="punctuation delimiter">.</span><span class="function">watch</span><span class="punctuation bracket">(</span><span class="variable">apiClientProvider</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span> <span class="comment">// dependency injection</span>
+  <span class="keyword">final</span> <span class="variable">count</span> <span class="operator">=</span> <span class="variable">ref</span><span class="punctuation delimiter">.</span><span class="function">watch</span><span class="punctuation bracket">(</span><span class="variable">counterProvider</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span> <span class="comment">// reactive dependency</span>
+
+  <span class="keyword">return</span> <span class="type">Repository</span><span class="punctuation bracket">(</span><span class="identifier parameter">api</span><span class="operator">:</span> <span class="variable">api</span><span class="punctuation delimiter">,</span> <span class="identifier parameter">count</span><span class="operator">:</span> <span class="variable">count</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+<span class="punctuation bracket">}</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+</code></pre></div>
+    <p>And then read and update the state:</p>
+    <div class="sourceCode"><pre class="dart sourceCode"><code class="sourceCode dart"><span class="keyword">class</span> <span class="type">MyWidget</span> <span class="keyword">extends</span> <span class="type">ConsumerWidget</span> <span class="punctuation bracket">{</span>
+  <span class="operator">@</span><span class="attribute">override</span>
+  <span class="type">Widget</span> <span class="function">build</span><span class="punctuation bracket">(</span><span class="type">BuildContext</span> <span class="identifier parameter">context</span><span class="punctuation delimiter">,</span> <span class="type">WidgetRef</span> <span class="identifier parameter">ref</span><span class="punctuation bracket">)</span> <span class="punctuation bracket">{</span>
+    <span class="keyword">final</span> <span class="variable">value</span> <span class="operator">=</span> <span class="variable">ref</span><span class="punctuation delimiter">.</span><span class="function">watch</span><span class="punctuation bracket">(</span><span class="variable">counterProvider</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+
+    <span class="keyword">return</span> <span class="type">Column</span><span class="punctuation bracket">(</span>
+      <span class="identifier parameter">children</span><span class="operator">:</span> <span class="punctuation bracket">[</span>
+        <span class="type">Text</span><span class="punctuation bracket">(</span><span class="variable">value</span><span class="punctuation delimiter">.</span><span class="function">toString</span><span class="punctuation bracket">(</span><span class="punctuation bracket">)</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">,</span>
+        <span class="type">ElevatedButton</span><span class="punctuation bracket">(</span>
+          <span class="identifier parameter">onPressed</span><span class="operator">:</span> <span class="punctuation bracket">(</span><span class="punctuation bracket">)</span> <span class="punctuation bracket">{</span>
+            <span class="variable">ref</span><span class="punctuation delimiter">.</span><span class="function">read</span><span class="punctuation bracket">(</span><span class="variable">counterProvider</span><span class="punctuation delimiter">.</span><span class="property">notifier</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">.</span><span class="property">state</span><span class="operator">++</span><span class="punctuation delimiter">;</span>
+          <span class="punctuation bracket">}</span><span class="punctuation delimiter">,</span>
+          <span class="identifier parameter">child</span><span class="operator">:</span> <span class="keyword">const</span> <span class="type">Text</span><span class="punctuation bracket">(</span><span class="string">&quot;Increment&quot;</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">,</span>
+        <span class="punctuation bracket">)</span><span class="punctuation delimiter">,</span>
+      <span class="punctuation bracket">]</span><span class="punctuation delimiter">,</span>
+    <span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+  <span class="punctuation bracket">}</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
+    <p>I guess you’d have to develop an app with flutter and riverpod to
+    feel why it’s such a cool idea.</p>
+    <p>And maybe develop some larger apps to see why not so much…</p>
+    <div class="sidenote">
+    <p>Which I have not, so let’s move on.</p>
+    </div>
+    <h1 id="a-memoized-function">A Memoized Function</h1>
+    <p>Our goal here is not to explore flutter design patters but to
+    instead understand how this <em>provider</em> mechanism works. And
+    the best way to learn is to implement it yourself.</p>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">type</span> <span class="type">ProviderFun</span><span class="punctuation bracket">&lt;</span><span class="type">T</span><span class="punctuation bracket">&gt;</span> = <span class="keyword">fn</span><span class="punctuation bracket">(</span><span class="operator">&amp;</span><span class="type">Container</span><span class="punctuation bracket">)</span> -&gt; <span class="type">T</span><span class="punctuation delimiter">;</span>
+
+<span class="keyword">struct</span> <span class="type">Provider</span><span class="punctuation bracket">&lt;</span><span class="type">T</span><span class="punctuation bracket">&gt;</span> <span class="punctuation bracket">{</span>
+    <span class="property">f</span><span class="punctuation delimiter">:</span> <span class="type">ProviderFun</span><span class="punctuation bracket">&lt;</span><span class="type">T</span><span class="punctuation bracket">&gt;</span><span class="punctuation delimiter">,</span>
+<span class="punctuation bracket">}</span>
+</code></pre></div>
+    <p>ex.</p>
+    <div class="sourceCode"><pre class="rust sourceCode"><code class="sourceCode rust"><span class="keyword">static</span> <span class="constructor">PROVIDER</span><span class="punctuation delimiter">:</span> <span class="type">Provider</span><span class="punctuation bracket">&lt;</span><span class="type builtin">f32</span><span class="punctuation bracket">&gt;</span> = <span class="type">Provider</span><span class="punctuation delimiter">::</span><span class="function">new</span><span class="punctuation bracket">(</span>|_| <span class="constant builtin">42.0</span><span class="punctuation bracket">)</span><span class="punctuation delimiter">;</span>
+</code></pre></div>
+    <p>Our provider will be just a wrapper around a function that takes
+    a reference to some <code>Container</code> (like the
+    <code>ref</code> in the flutter example above) and returns some
+    value.</p>
+    <p>The <code>Container</code> is the one that will cache the
+    providers’ values.</p>
     <p>To be continued…</p>
 </body>
 
